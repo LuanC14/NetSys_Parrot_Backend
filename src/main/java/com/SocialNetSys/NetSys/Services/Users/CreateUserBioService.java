@@ -1,8 +1,8 @@
 package com.SocialNetSys.NetSys.Services.Users;
 
 import com.SocialNetSys.NetSys.Models.Entities.User;
-import com.SocialNetSys.NetSys.Models.Requests_Models.Biography;
-import com.SocialNetSys.NetSys.Models.Requests_Models.BiographyRequest;
+import com.SocialNetSys.NetSys.Models.Objects_Model.Biography;
+import com.SocialNetSys.NetSys.Models.Objects_Model.BiographyRequest;
 import com.SocialNetSys.NetSys.Repositories.UserRepository;
 import com.SocialNetSys.NetSys.Services.Users.Interfaces.ICreateUserBioService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +17,9 @@ public class CreateUserBioService implements ICreateUserBioService {
     private UserRepository _userRepository;
     public String createBiography(BiographyRequest request) {
 
-        var user_id = request.getUserId();
-        UUID uuid = UUID.fromString(user_id);
+        UUID user_id = UUID.fromString(request.getUserId());
 
-       Optional<User> optionalUser =  _userRepository.findById(uuid);
+       Optional<User> optionalUser =  _userRepository.findById(user_id);
 
        if(optionalUser.isPresent()) {
            User user = optionalUser.get();

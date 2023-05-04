@@ -1,7 +1,8 @@
 package com.SocialNetSys.NetSys.Services.Users;
 
 import com.SocialNetSys.NetSys.Models.Entities.User;
-import com.SocialNetSys.NetSys.Models.Requests_Models.UserRequest;
+import com.SocialNetSys.NetSys.Models.Objects_Model.FindUserResponse;
+import com.SocialNetSys.NetSys.Models.Objects_Model.UserRequest;
 import com.SocialNetSys.NetSys.Repositories.UserRepository;
 import com.SocialNetSys.NetSys.Services.Users.Interfaces.ICreateUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,4 +21,9 @@ public class CreateUserService implements ICreateUserService {
         return response.getId().toString();
     }
 
+    public FindUserResponse findUserByEmail(String email) {
+        var user = _userRepository.findUserByEmail(email).get();
+
+        return new FindUserResponse(user.getId(), user.getName(), user.getEmail());
+    }
 }

@@ -1,6 +1,6 @@
 package com.SocialNetSys.NetSys.Controllers.User;
 
-import com.SocialNetSys.NetSys.Models.Requests_Models.BiographyRequest;
+import com.SocialNetSys.NetSys.Models.Objects_Model.BiographyRequest;
 import com.SocialNetSys.NetSys.Services.Users.Interfaces.ICreateUserBioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
