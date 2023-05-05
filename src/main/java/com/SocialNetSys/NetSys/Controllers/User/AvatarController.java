@@ -1,4 +1,4 @@
 package com.SocialNetSys.NetSys.Controllers.User;
 
-public class UserAvatarController {
+public class AvatarController {
 }

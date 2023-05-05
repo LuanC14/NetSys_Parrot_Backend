@@ -1,10 +1,11 @@
 package com.SocialNetSys.NetSys.Models.Entities;
 
-import com.SocialNetSys.NetSys.Models.Requests_Models.Biography;
+import com.SocialNetSys.NetSys.Models.Objects_Model.Biography;
+import lombok.Data;
 
 import java.util.LinkedList;
 import java.util.UUID;
-
+@Data
 public class User {
     private UUID id;
     private String name;
