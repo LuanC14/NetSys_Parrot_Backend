@@ -6,8 +6,4 @@ import java.util.LinkedList;
 public class BiographyRequest {
     public LinkedList<Biography> biography;
 
-    public String getUserId() {
-
-        return biography.getFirst().user_id;
-    }
 }
