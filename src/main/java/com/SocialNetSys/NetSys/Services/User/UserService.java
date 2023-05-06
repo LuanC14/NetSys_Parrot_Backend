@@ -1,7 +1,7 @@
 package com.SocialNetSys.NetSys.Services.User;
 
 import com.SocialNetSys.NetSys.Models.Entities.User;
-import com.SocialNetSys.NetSys.Models.Objects_Model.Biography;
+import com.SocialNetSys.NetSys.Models.Objects_Model.Biography_Model;
 import com.SocialNetSys.NetSys.Models.Objects_Model.FindUserResponse;
 import com.SocialNetSys.NetSys.Models.Objects_Model.UserRequest;
 import com.SocialNetSys.NetSys.Repositories.UserRepository;
@@ -50,9 +50,17 @@ public class UserService implements IUserService {
         return _userRepository.findById(id).get();
     }
 
-    public void addBiography(UUID id, Biography bio) {
+    public void saveBiographyInDB(UUID id, Biography_Model bio) {
         var user = _userRepository.findById(id).get();
         user.setBiography(bio);
+
+        _userRepository.save(user);
+    }
+
+    public void saveAvatarInDB(String avatar, UUID userId) {
+
+        var user = _userRepository.findById(userId).get();
+        user.setAvatar(avatar);
 
         _userRepository.save(user);
     }

@@ -1,6 +1,6 @@
 package com.SocialNetSys.NetSys.Services.Biography;
 
-import com.SocialNetSys.NetSys.Models.Objects_Model.Biography;
+import com.SocialNetSys.NetSys.Models.Objects_Model.Biography_Model;
 import com.SocialNetSys.NetSys.Models.Objects_Model.BiographyRequest;
 import com.SocialNetSys.NetSys.Services.User.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +14,18 @@ public class BiographyService implements IBiographyService {
 
     public void createBiography(BiographyRequest request, HttpServletRequest servletRequest) {
 
-        var userIdFromRequestBody = (String) servletRequest.getAttribute("user_id");
+        var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
 
-        UUID id = UUID.fromString(userIdFromRequestBody);
+        UUID id = UUID.fromString(userIdFromRequest);
 
-        for(Biography b : request.biography) {
-            var bio = new Biography();
+        for(Biography_Model b : request.biography) {
+            var bio = new Biography_Model();
 
             bio.setType(b.getType());
             bio.setValue(b.getValue());
             bio.setUser_id(id);
 
-            _userService.addBiography(id, bio);
+            _userService.saveBiographyInDB(id, bio);
         }
     };
 }
