@@ -1,4 +1,4 @@
-package com.SocialNetSys.NetSys.Controllers.User;
+package com.SocialNetSys.NetSys.Controllers;
 
 import com.SocialNetSys.NetSys.Models.Objects_Model.FindUserResponse;
 import com.SocialNetSys.NetSys.Models.Objects_Model.UserRequest;

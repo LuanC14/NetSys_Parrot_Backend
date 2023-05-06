@@ -1,4 +1,4 @@
-package com.SocialNetSys.NetSys.Controllers.Authentication;
+package com.SocialNetSys.NetSys.Controllers;
 
 import com.SocialNetSys.NetSys.Models.Objects_Model.AuthenticateRequest;
 import com.SocialNetSys.NetSys.Models.Objects_Model.AuthenticateResponse;

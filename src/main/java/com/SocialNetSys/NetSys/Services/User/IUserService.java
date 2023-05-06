@@ -1,7 +1,7 @@
 package com.SocialNetSys.NetSys.Services.User;
 
 import com.SocialNetSys.NetSys.Models.Entities.User;
-import com.SocialNetSys.NetSys.Models.Objects_Model.Biography;
+import com.SocialNetSys.NetSys.Models.Objects_Model.Biography_Model;
 import com.SocialNetSys.NetSys.Models.Objects_Model.FindUserResponse;
 import com.SocialNetSys.NetSys.Models.Objects_Model.UserRequest;
 
@@ -16,5 +16,7 @@ public interface IUserService {
 
     public User getUserByID(UUID id);
 
-    public void addBiography(UUID id, Biography bio);
+    public void saveBiographyInDB(UUID id, Biography_Model bio);
+
+    public void saveAvatarInDB(String avatar, UUID userId);
 }

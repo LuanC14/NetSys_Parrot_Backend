@@ -1,4 +1,4 @@
-package com.SocialNetSys.NetSys.Controllers.User;
+package com.SocialNetSys.NetSys.Controllers;
 
 import com.SocialNetSys.NetSys.Models.Objects_Model.BiographyRequest;
 import com.SocialNetSys.NetSys.Services.Biography.IBiographyService;
