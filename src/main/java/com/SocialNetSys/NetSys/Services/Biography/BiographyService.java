@@ -1,7 +1,7 @@
 package com.SocialNetSys.NetSys.Services.Biography;
 
-import com.SocialNetSys.NetSys.Models.Objects_Model.Biography_Model;
-import com.SocialNetSys.NetSys.Models.Objects_Model.BiographyRequest;
+import com.SocialNetSys.NetSys.Models.Objects.Biography_Model;
+import com.SocialNetSys.NetSys.Models.Requests.BiographyRequest;
 import com.SocialNetSys.NetSys.Services.User.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

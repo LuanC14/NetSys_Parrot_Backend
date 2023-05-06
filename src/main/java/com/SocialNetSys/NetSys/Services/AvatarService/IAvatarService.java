@@ -1,9 +1,8 @@
 package com.SocialNetSys.NetSys.Services.AvatarService;
 
 import com.SocialNetSys.NetSys.Models.Entities.User;
-import com.SocialNetSys.NetSys.Models.Objects_Model.AvatarRequest;
+import com.SocialNetSys.NetSys.Models.Requests.AvatarRequest;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.RequestBody;
 
 public interface IAvatarService {
 

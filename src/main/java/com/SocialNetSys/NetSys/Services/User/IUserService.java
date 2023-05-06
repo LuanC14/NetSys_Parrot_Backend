@@ -1,9 +1,9 @@
 package com.SocialNetSys.NetSys.Services.User;
 
 import com.SocialNetSys.NetSys.Models.Entities.User;
-import com.SocialNetSys.NetSys.Models.Objects_Model.Biography_Model;
-import com.SocialNetSys.NetSys.Models.Objects_Model.FindUserResponse;
-import com.SocialNetSys.NetSys.Models.Objects_Model.UserRequest;
+import com.SocialNetSys.NetSys.Models.Objects.Biography_Model;
+import com.SocialNetSys.NetSys.Models.Responses.FindUserResponse;
+import com.SocialNetSys.NetSys.Models.Requests.UserRequest;
 
 import java.util.UUID;
 

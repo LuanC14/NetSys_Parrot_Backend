@@ -1,4 +1,4 @@
-package com.SocialNetSys.NetSys.Models.Objects_Model;
+package com.SocialNetSys.NetSys.Models.Responses;
 
 import java.util.UUID;
 

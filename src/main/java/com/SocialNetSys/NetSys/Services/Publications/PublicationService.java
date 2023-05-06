@@ -1,8 +1,9 @@
 package com.SocialNetSys.NetSys.Services.Publications;
 
 import com.SocialNetSys.NetSys.Models.Entities.Publication;
-import com.SocialNetSys.NetSys.Models.Objects_Model.Comment_Model;
-import com.SocialNetSys.NetSys.Models.Objects_Model.PublicationRequest;
+import com.SocialNetSys.NetSys.Models.Objects.Comment_Model;
+import com.SocialNetSys.NetSys.Models.Objects.Like_Model;
+import com.SocialNetSys.NetSys.Models.Requests.PublicationRequest;
 import com.SocialNetSys.NetSys.Repositories.PublicationRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,4 +35,13 @@ public class PublicationService implements IPublicationService {
 
         _publicationRepository.save(publication);
     }
+
+   public void setLike(Like_Model like) {
+        var post_id = like.getPost_id();
+        var publication = _publicationRepository.findById(post_id).get();
+
+        publication.saveLike(like);
+
+       _publicationRepository.save(publication);
+   }
 }

@@ -1,7 +1,7 @@
 package com.SocialNetSys.NetSys.Controllers;
 
-import com.SocialNetSys.NetSys.Models.Objects_Model.FindUserResponse;
-import com.SocialNetSys.NetSys.Models.Objects_Model.UserRequest;
+import com.SocialNetSys.NetSys.Models.Responses.FindUserResponse;
+import com.SocialNetSys.NetSys.Models.Requests.UserRequest;
 import com.SocialNetSys.NetSys.Services.User.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.SocialNetSys.NetSys.Services.AvatarService;
 
 import com.SocialNetSys.NetSys.Models.Entities.User;
-import com.SocialNetSys.NetSys.Models.Objects_Model.AvatarRequest;
+import com.SocialNetSys.NetSys.Models.Requests.AvatarRequest;
 import com.SocialNetSys.NetSys.Services.User.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

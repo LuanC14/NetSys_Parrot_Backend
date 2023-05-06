@@ -1,6 +1,6 @@
 package com.SocialNetSys.NetSys.Services.Biography;
 
-import com.SocialNetSys.NetSys.Models.Objects_Model.BiographyRequest;
+import com.SocialNetSys.NetSys.Models.Requests.BiographyRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 

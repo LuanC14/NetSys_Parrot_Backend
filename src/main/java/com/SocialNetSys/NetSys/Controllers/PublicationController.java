@@ -1,8 +1,8 @@
 package com.SocialNetSys.NetSys.Controllers;
 
 import com.SocialNetSys.NetSys.Models.Entities.Publication;
-import com.SocialNetSys.NetSys.Models.Objects_Model.CommentRequest;
-import com.SocialNetSys.NetSys.Models.Objects_Model.PublicationRequest;
+import com.SocialNetSys.NetSys.Models.Requests.CommentRequest;
+import com.SocialNetSys.NetSys.Models.Requests.PublicationRequest;
 import com.SocialNetSys.NetSys.Services.Comment.ICommentService;
 import com.SocialNetSys.NetSys.Services.Publications.IPublicationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,4 +37,6 @@ public class PublicationController {
 
         return ResponseEntity.ok().body("Comentário adicionado");
     }
+
+
 }
