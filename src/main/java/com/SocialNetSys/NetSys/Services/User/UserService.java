@@ -2,8 +2,10 @@ package com.SocialNetSys.NetSys.Services.User;
 
 import com.SocialNetSys.NetSys.Models.Entities.User;
 import com.SocialNetSys.NetSys.Models.Objects.Biography_Model;
+import com.SocialNetSys.NetSys.Models.Objects.User_Model;
 import com.SocialNetSys.NetSys.Models.Responses.FindUserResponse;
 import com.SocialNetSys.NetSys.Models.Requests.UserRequest;
+import com.SocialNetSys.NetSys.Models.Responses.FollowerResponse;
 import com.SocialNetSys.NetSys.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -63,5 +65,22 @@ public class UserService implements IUserService {
         user.setAvatar(avatar);
 
         _userRepository.save(user);
+    }
+
+    public FollowerResponse saveNewFollower(UUID youId, UUID userFollowedId) {
+
+        var youUserEntity = getUserByID(youId);
+        var userThatGetNewFollowEntity = getUserByID(userFollowedId);
+
+        var youUser = new User_Model(youUserEntity.getName(), youUserEntity.getId());
+        var userThatGetNewFollow = new User_Model(userThatGetNewFollowEntity.getName(), userThatGetNewFollowEntity.getId());
+
+        userThatGetNewFollowEntity.setFollower(youUser);
+        youUserEntity.setFollowing(userThatGetNewFollow);
+
+        _userRepository.save(youUserEntity);
+        _userRepository.save(userThatGetNewFollowEntity);
+
+        return new FollowerResponse(youUser.getName(), userThatGetNewFollow.getName());
     }
 }
