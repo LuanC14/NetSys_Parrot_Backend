@@ -6,12 +6,12 @@ import java.util.UUID;
 @Data
 public class Like_Model {
     public String name;
-    public UUID user_id;
-    public UUID post_id;
+    public UUID userId;
+    public UUID postId;
 
-    public Like_Model(String name, UUID user_id, UUID post_id) {
+    public Like_Model(String name, UUID userId, UUID postId) {
         this.name = name;
-        this.user_id = user_id;
-        this.post_id = post_id;
+        this.userId = userId;
+        this.postId = postId;
     }
 }

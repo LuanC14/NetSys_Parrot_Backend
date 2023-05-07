@@ -10,6 +10,7 @@ import java.util.UUID;
 public class User {
     private UUID id;
     private String name;
+    public String username;
     private String email;
     private String password;
     private LinkedList<Biography_Model> biography;
@@ -17,10 +18,11 @@ public class User {
     public LinkedList<User_Model> followers;
     public LinkedList<User_Model> following;
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String username, String password) {
         this.setId();
         this.name = name;
         this.email = email;
+        this.username = username;
         this.password = password;
         this.biography = new LinkedList<Biography_Model>();
         };
@@ -36,7 +38,6 @@ public class User {
     public UUID getId() {
         return this.id;
     }
-
 
     public void startFollow(User_Model followedUser) {
 
@@ -54,6 +55,17 @@ public class User {
         }
 
         this.followers.add(newFollower);
+    }
+
+    public boolean isFollowing(UUID userId) {
+        if (following != null) {
+            for (User_Model user : following) {
+                if (user.id.equals(userId)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void stopFollow(UUID followedUserId) {
