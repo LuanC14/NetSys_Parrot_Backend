@@ -14,14 +14,16 @@ public class Publication {
     @Id
     public UUID id;
     public UUID userId;
+    public String nameAuthor;
     public String contentText;
     public String contentImage;
     public Date created_at;
     public LinkedList<Comment_Model> comments;
     public LinkedList<Like_Model> likes;
 
-    public Publication(String contentText, String contentImage, UUID userId) {
+    public Publication(String nameAuthor, String contentText, String contentImage, UUID userId) {
         setId();
+        this.nameAuthor = nameAuthor;
         this.contentText = contentText;
         this.contentImage = contentImage;
         this.created_at = new Date(new ObjectId().getDate().getTime());
@@ -45,13 +47,10 @@ public class Publication {
     }
 
     public void saveLike(Like_Model like) {
-
         this.likes.add(like);
     }
 
-    public void removeLike(UUID user_id) {
-
-        likes.removeIf(like -> like.getUser_id().equals(user_id));
-
+    public void removeLike(UUID userId) {
+        likes.removeIf(like -> like.getUserId().equals(userId));
     }
 }

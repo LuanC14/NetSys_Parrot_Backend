@@ -22,5 +22,5 @@ public interface IPublicationService {
 
     public void unlike(UUID user_id, UUID post_id);
 
-//    public Like_Model findLikeById(UUID user_id, UUID post_id);
+    public boolean verifyIfUserAlreadyLiked(UUID userId, UUID postId);
 }

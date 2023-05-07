@@ -25,16 +25,21 @@ public class UserService implements IUserService {
 
         try {
             var checkEmailInUse = _userRepository.findUserByEmail(request.email).isPresent();
+            var checkUsernameAlreadyInUse = _userRepository.findUserByUsername(request.username).isPresent();
 
             if(checkEmailInUse) {
                 return "O email já está em uso";
             };
 
+            if(checkUsernameAlreadyInUse) {
+                return "O @username já está em uso";
+            }
+
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
             String hashedPassword = encoder.encode(request.password);
 
-            var response = new User(request.name, request.email, hashedPassword);
+            var response = new User(request.name, request.email, request.username, hashedPassword);
 
             _userRepository.save(response);
 
@@ -48,9 +53,10 @@ public class UserService implements IUserService {
     public FindUserResponse responseUserByEmail(String email) {
         var user = _userRepository.findUserByEmail(email).get();
 
-        return new FindUserResponse(user.getId(), user.getName(), user.getEmail());
+        return new FindUserResponse(
+                user.getId(), user.getName(), user.getEmail(),
+                user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography());
     }
-
     public User getUserByEmail(String email) {
         var optionalUser = _userRepository.findUserByEmail(email);
 
@@ -92,8 +98,8 @@ public class UserService implements IUserService {
             throw new IllegalArgumentException("Usuário já está sendo seguido, o client lhe redirecionará pro serviço de unfollow");
         }
 
-        var myUser = new User_Model(myUserEntity.getName(), myUserEntity.getId()); // Objeto que será armazenado na Array de seguidores
-        var followedUser = new User_Model(followedUserEntity.getName(), followedUserEntity.getId()); // E na array de quem estou Seguindo
+        var myUser = new User_Model(myUserEntity.getName(), myUserEntity.getId(), myUserEntity.getUsername()); // Objeto que será armazenado na Array de seguidores
+        var followedUser = new User_Model(followedUserEntity.getName(), followedUserEntity.getId(), followedUserEntity.getUsername()); // E na array de quem estou Seguindo
 
         myUserEntity.startFollow(followedUser); // Salvando o usuário que estou seguindo na  Array de quem estou seguindo
         followedUserEntity.receiveFollow(myUser); // Salvando meus dados na Array de seguidores do usuário seguido.

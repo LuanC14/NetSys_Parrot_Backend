@@ -6,6 +6,7 @@ import com.SocialNetSys.NetSys.Models.Objects.Like_Model;
 import com.SocialNetSys.NetSys.Models.Requests.PublicationRequest;
 import com.SocialNetSys.NetSys.Models.Responses.PublicationResponse;
 import com.SocialNetSys.NetSys.Repositories.PublicationRepository;
+import com.SocialNetSys.NetSys.Services.User.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import java.util.UUID;
 public class PublicationService implements IPublicationService {
     @Autowired
     PublicationRepository _publicationRepository;
+    @Autowired
+    IUserService _userService;
 
     public Publication createPublication(PublicationRequest request, HttpServletRequest servletRequest) {
 
@@ -25,7 +28,9 @@ public class PublicationService implements IPublicationService {
 
          var userId = UUID.fromString(userIdFromRequest);
 
-        var publication = new Publication(request.contentText, request.urlImage, userId);
+         var nameAuthor = _userService.getUserByID(userId).getName();
+
+        var publication = new Publication(nameAuthor, request.contentText, request.urlImage, userId);
 
         _publicationRepository.save(publication);
 
@@ -44,6 +49,7 @@ public class PublicationService implements IPublicationService {
 
                 response.setPostId(publication.getId());
                 response.setAuthorId(publication.getUserId());
+                response.setNameAuthor(publication.getNameAuthor());
                 response.setContentText(publication.getContentText());
                 response.setContentImage(publication.getContentImage());
                 response.setCreatedAt(publication.getCreated_at());
@@ -59,8 +65,8 @@ public class PublicationService implements IPublicationService {
         }
     }
 
-    public void createComment(UUID post_id, Comment_Model comment) {
-        var publication = _publicationRepository.findById(post_id).get();
+    public void createComment(UUID postId, Comment_Model comment) {
+        var publication = _publicationRepository.findById(postId).get();
 
         publication.saveComment(comment);
 
@@ -68,26 +74,26 @@ public class PublicationService implements IPublicationService {
     }
 
    public void setLike(Like_Model like) {
-        var post_id = like.getPost_id();
-        var publication = _publicationRepository.findById(post_id).get();
+        var postId = like.getPostId();
+        var publication = _publicationRepository.findById(postId).get();
 
         publication.saveLike(like);
 
        _publicationRepository.save(publication);
    }
 
-//   public Like_Model findLikeById(UUID userId, UUID postId) {
-//       var post = _publicationRepository.findById(postId).get();
-//
-//       var likes = post.likes;
-//
-//       for(Like_Model like : likes) {
-//           if(like.getUser_id().equals(userId)) {
-//               return like;
-//           }
-//       }
-//       return null;
-//   }
+   public boolean verifyIfUserAlreadyLiked(UUID userId, UUID postId) {
+       var publication = _publicationRepository.findById(postId).get();
+
+       var likes = publication.likes;
+
+       for(Like_Model like : likes) {
+           if(like.getUserId().equals(userId)) {
+               return true;
+           }
+       }
+       return false;
+   }
 
    public void unlike(UUID userId, UUID postId) {
        var post = _publicationRepository.findById(postId).get();

@@ -16,9 +16,9 @@ public class LikesController {
     ILikesService _likeService;
 
     @PostMapping(path = "/{post_id}")
-    ResponseEntity<String> likePublication(@RequestBody LikeRequest request, HttpServletRequest servletRequest, @PathVariable UUID post_id) {
+    ResponseEntity<String> likePublication( HttpServletRequest servletRequest, @PathVariable UUID post_id) {
 
-        _likeService.setLikePublication(request, servletRequest, post_id);
+        _likeService.setLikePublication( servletRequest, post_id);
 
         return ResponseEntity.ok().body("Like Publication");
     }

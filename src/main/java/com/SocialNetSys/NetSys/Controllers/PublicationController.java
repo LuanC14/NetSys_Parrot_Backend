@@ -19,8 +19,7 @@ import java.util.UUID;
 public class PublicationController {
     @Autowired
     IPublicationService _publicationService;
-    @Autowired
-    ICommentService _commentService;
+
     @GetMapping(path = "/{userId}")
     ResponseEntity<List<PublicationResponse>> findPublication(@PathVariable UUID userId) {
 
@@ -35,12 +34,4 @@ public class PublicationController {
 
         return ResponseEntity.ok().body(response);
     };
-
-    @PostMapping(path = "/{post_id}")
-    ResponseEntity<String> createComment(@RequestBody CommentRequest request, HttpServletRequest servletRequest, @PathVariable UUID post_id) {
-
-        _commentService.handleComment(request, servletRequest, post_id);
-
-        return ResponseEntity.ok().body("Comentário adicionado");
-    }
 }

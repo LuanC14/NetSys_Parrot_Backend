@@ -11,6 +11,7 @@ import java.util.UUID;
 public class PublicationResponse {
     public UUID postId;
     public UUID authorId;
+    public String nameAuthor;
     public String contentText;
     public String contentImage;
     public Date createdAt;
