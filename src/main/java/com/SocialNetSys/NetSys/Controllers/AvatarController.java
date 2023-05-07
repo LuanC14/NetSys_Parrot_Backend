@@ -20,7 +20,6 @@ public class AvatarController {
     IAvatarService _avatarService;
 
     @PatchMapping()
-    @PreAuthorize("Authorized")
     ResponseEntity<String> setAvatar(@RequestBody AvatarRequest request, HttpServletRequest servletRequest) {
 
         _avatarService.setAvatar(request, servletRequest);

@@ -22,7 +22,6 @@ public class PublicationController {
     @Autowired
     ICommentService _commentService;
     @PostMapping()
-    @PreAuthorize("Authorized")
     ResponseEntity<Publication> createPublication(@RequestBody PublicationRequest request, HttpServletRequest servletRequest) {
 
         var response = _publicationService.createPublication(request, servletRequest);

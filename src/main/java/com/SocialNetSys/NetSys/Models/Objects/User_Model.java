@@ -9,7 +9,6 @@ public class User_Model {
     public UUID id;
 
     public User_Model(String name, UUID id) {
-
         this.name = name;
         this.id = id;
     }

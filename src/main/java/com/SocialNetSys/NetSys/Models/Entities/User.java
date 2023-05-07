@@ -14,8 +14,8 @@ public class User {
     private String password;
     private LinkedList<Biography_Model> biography;
     private String avatar;
-    private LinkedList<User_Model> followers;
-    private LinkedList<User_Model> following;
+    public LinkedList<User_Model> followers;
+    public LinkedList<User_Model> following;
 
     public User(String name, String email, String password) {
         this.setId();
@@ -37,20 +37,35 @@ public class User {
         return this.id;
     }
 
-    public void setFollower(User_Model newUser) {
+
+    public void startFollow(User_Model followedUser) {
+
+        if(this.following == null) {
+            this.following = new LinkedList<User_Model>();
+        }
+
+        this.following.add(followedUser);
+    }
+
+    public void receiveFollow(User_Model newFollower) {
 
         if(followers == null) {
             this.followers = new LinkedList<User_Model>();
         }
 
-        this.followers.add(newUser);
+        this.followers.add(newFollower);
     }
 
-    public void setFollowing(User_Model newUser) {
+    public void stopFollow(UUID followedUserId) {
 
-        if(this.following == null) {
-            this.following = new LinkedList<User_Model>();
-        }
-        this.following.add(newUser);
+    following.removeIf(user -> user.getId().equals(followedUserId));
+
+    }
+
+    public void lostFollow(UUID idFollowLost) {
+
+        followers.removeIf(user -> user.getId().equals(idFollowLost));
+
+
     }
 }

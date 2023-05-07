@@ -44,4 +44,12 @@ public class PublicationService implements IPublicationService {
 
        _publicationRepository.save(publication);
    }
+
+   public void removeLike(UUID user_id, UUID post_id) {
+       var post = _publicationRepository.findById(post_id).get();
+
+       post.removeLike(user_id);
+
+       _publicationRepository.save(post);
+   }
 }

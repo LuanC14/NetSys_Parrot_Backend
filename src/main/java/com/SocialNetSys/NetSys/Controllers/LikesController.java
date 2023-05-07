@@ -22,4 +22,11 @@ public class LikesController {
 
         return ResponseEntity.ok().body("Like Publication");
     }
+
+    @DeleteMapping( path = "/delete/{post_id}")
+    ResponseEntity<String> removeLike(HttpServletRequest servletRequest, @PathVariable UUID post_id ) {
+        _likeService.removeLikePublication(servletRequest, post_id);
+
+        return ResponseEntity.ok().body("Like removido");
+    }
 }

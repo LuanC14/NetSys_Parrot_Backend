@@ -20,7 +20,6 @@ public class BiographyController {
     IBiographyService _biographyService;
 
     @PatchMapping()
-    @PreAuthorize("Authorized")
     ResponseEntity<String> userBiographyCreator(@RequestBody BiographyRequest request, HttpServletRequest servletRequest) {
         _biographyService.createBiography(request, servletRequest);
         return ResponseEntity.ok("Created with success!");

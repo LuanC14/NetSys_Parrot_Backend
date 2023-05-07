@@ -5,10 +5,7 @@ import com.SocialNetSys.NetSys.Services.Follows.IFollowService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 @RestController
@@ -23,5 +20,12 @@ public class FollowController {
        var response = _followService.followUser(servletRequest, userFollowedId);
 
         return ResponseEntity.ok().body(response.getNameFollower() + " acabou de seguir " + response.getNameFollowed());
+    }
+
+    @DeleteMapping(path = "/{userFollowedId}")
+    ResponseEntity<String> unfollow(HttpServletRequest servletRequest, @PathVariable UUID userFollowedId) {
+
+        var response = _followService.unfollowUser(servletRequest, userFollowedId);
+        return ResponseEntity.ok().body(response.nameFollower + " Parou de seguir " + response.nameFollowed);
     }
 }

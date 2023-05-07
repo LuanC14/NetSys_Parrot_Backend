@@ -15,4 +15,6 @@ public interface IPublicationService {
     public void createComment(UUID publi_id, Comment_Model comment);
 
     public void setLike(Like_Model like);
+
+    public void removeLike(UUID user_id, UUID post_id);
 }

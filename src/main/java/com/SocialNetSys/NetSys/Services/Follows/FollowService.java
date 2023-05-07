@@ -12,13 +12,20 @@ public class FollowService implements  IFollowService {
     @Autowired
     IUserService _userService;
 
-
     public FollowerResponse followUser(HttpServletRequest servletRequest, UUID userFollowedId) {
 
-        var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
+        var userIdFromRequest = (String) servletRequest.getAttribute("user_id"); // Meu ID
 
-        var youId = UUID.fromString(userIdFromRequest);
+        var myId = UUID.fromString(userIdFromRequest);
 
-       return _userService.saveNewFollower(youId, userFollowedId);
+       return _userService.followManager(myId, userFollowedId);
+    }
+
+    public FollowerResponse unfollowUser(HttpServletRequest servletRequest, UUID userFollowedId) {
+        var myIdFromRequest = (String) servletRequest.getAttribute("user_id");
+
+        var myId = UUID.fromString(myIdFromRequest);
+
+        return _userService.unfollowManager(myId, userFollowedId);
     }
 }

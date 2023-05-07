@@ -27,7 +27,8 @@ public class AuthMiddleware implements HandlerInterceptor {
 
         if (
                 request.getRequestURI().equals("/api/user/signup") ||
-                request.getRequestURI().equals("/api/auth")
+                request.getRequestURI().equals("/api/auth") ||
+                request.getRequestURI().equals("/api/user/password")
             ) { return true; }
 
 

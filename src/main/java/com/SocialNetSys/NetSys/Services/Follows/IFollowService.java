@@ -8,4 +8,6 @@ import java.util.UUID;
 public interface IFollowService {
 
     public FollowerResponse followUser(HttpServletRequest servletRequest, UUID userFollowedId);
+
+    public FollowerResponse unfollowUser(HttpServletRequest servletRequest, UUID userFollowedId);
 }

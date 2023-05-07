@@ -48,4 +48,15 @@ public class Publication {
 
         this.likes.add(like);
     }
+
+    public void removeLike(UUID user_id) {
+
+        for(Like_Model like : likes) {
+
+            if(like.getUser_id() == user_id) {
+                likes.remove(like);
+                break;
+            }
+        }
+    }
 }
