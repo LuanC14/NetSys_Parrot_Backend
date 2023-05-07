@@ -17,10 +17,15 @@ public class UserController {
     @Autowired
     private IUserService _userService;
 
-    @GetMapping()
+    @GetMapping("/email")
     public ResponseEntity<FindUserResponse> getUser(String email) {
 
         return ResponseEntity.ok().body(_userService.responseUserByEmail(email));
+    }
+    @GetMapping("/username")
+    public ResponseEntity<FindUserResponse> getUserByUsername(String username) {
+
+        return ResponseEntity.ok().body(_userService.responseUserByUsername(username));
     }
 
     @PostMapping("/signup")
@@ -29,7 +34,6 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
-
     @PatchMapping("/password")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {
 
