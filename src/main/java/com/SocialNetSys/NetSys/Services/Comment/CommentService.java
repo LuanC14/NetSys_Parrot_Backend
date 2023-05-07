@@ -1,7 +1,7 @@
 package com.SocialNetSys.NetSys.Services.Comment;
 
-import com.SocialNetSys.NetSys.Models.Objects_Model.CommentRequest;
-import com.SocialNetSys.NetSys.Models.Objects_Model.Comment_Model;
+import com.SocialNetSys.NetSys.Models.Requests.CommentRequest;
+import com.SocialNetSys.NetSys.Models.Objects.Comment_Model;
 import com.SocialNetSys.NetSys.Services.Publications.IPublicationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

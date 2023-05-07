@@ -1,9 +1,13 @@
 package com.SocialNetSys.NetSys.Services.User;
 
 import com.SocialNetSys.NetSys.Models.Entities.User;
-import com.SocialNetSys.NetSys.Models.Objects_Model.Biography_Model;
-import com.SocialNetSys.NetSys.Models.Objects_Model.FindUserResponse;
-import com.SocialNetSys.NetSys.Models.Objects_Model.UserRequest;
+import com.SocialNetSys.NetSys.Models.Objects.Biography_Model;
+import com.SocialNetSys.NetSys.Models.Requests.ChangeNameRequest;
+import com.SocialNetSys.NetSys.Models.Requests.ChangePasswordRequest;
+import com.SocialNetSys.NetSys.Models.Responses.FindUserResponse;
+import com.SocialNetSys.NetSys.Models.Requests.UserRequest;
+import com.SocialNetSys.NetSys.Models.Responses.FollowerResponse;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.UUID;
 
@@ -19,4 +23,12 @@ public interface IUserService {
     public void saveBiographyInDB(UUID id, Biography_Model bio);
 
     public void saveAvatarInDB(String avatar, UUID userId);
+
+    public FollowerResponse followManager(UUID myId, UUID userFollowedId);
+
+    public void changePassword(ChangePasswordRequest request);
+
+    public void changeName(ChangeNameRequest request, HttpServletRequest servletRequest);
+
+    public FollowerResponse unfollowManager(UUID myId, UUID userFollowedId);
 }

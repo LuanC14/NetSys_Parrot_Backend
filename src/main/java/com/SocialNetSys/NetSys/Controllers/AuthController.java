@@ -1,7 +1,7 @@
 package com.SocialNetSys.NetSys.Controllers;
 
-import com.SocialNetSys.NetSys.Models.Objects_Model.AuthenticateRequest;
-import com.SocialNetSys.NetSys.Models.Objects_Model.AuthenticateResponse;
+import com.SocialNetSys.NetSys.Models.Requests.AuthenticateRequest;
+import com.SocialNetSys.NetSys.Models.Responses.AuthenticateResponse;
 import com.SocialNetSys.NetSys.Services.Authentication.IAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

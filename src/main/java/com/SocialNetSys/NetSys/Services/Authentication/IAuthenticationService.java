@@ -1,7 +1,7 @@
 package com.SocialNetSys.NetSys.Services.Authentication;
 
-import com.SocialNetSys.NetSys.Models.Objects_Model.AuthenticateRequest;
-import com.SocialNetSys.NetSys.Models.Objects_Model.AuthenticateResponse;
+import com.SocialNetSys.NetSys.Models.Requests.AuthenticateRequest;
+import com.SocialNetSys.NetSys.Models.Responses.AuthenticateResponse;
 
 public interface IAuthenticationService {
 

@@ -1,4 +1,5 @@
-package com.SocialNetSys.NetSys.Models.Objects_Model;
+package com.SocialNetSys.NetSys.Models.Requests;
+import com.SocialNetSys.NetSys.Models.Objects.Biography_Model;
 import lombok.Data;
 
 import java.util.LinkedList;
