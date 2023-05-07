@@ -16,6 +16,8 @@ public interface IUserService {
 
     public FindUserResponse responseUserByEmail(String email);
 
+    public FindUserResponse responseUserByUsername(String username);
+
     public User getUserByEmail(String email);
 
     public User getUserByID(UUID id);

@@ -29,6 +29,7 @@ public class AuthMiddleware implements HandlerInterceptor {
 
         if(request.getRequestURI().equals("/api/auth") || request.getRequestURI().equals("/api/publications") ) { return true; }
 
+        if(request.getRequestURI().equals("/api/user/username") || request.getRequestURI().equals("/api/user/email") ) { return  true; }
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new RuntimeException("Token not found");
