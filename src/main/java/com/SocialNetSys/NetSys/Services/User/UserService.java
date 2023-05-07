@@ -23,15 +23,26 @@ public class UserService implements IUserService {
 
     public String createUser(UserRequest request) {
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        try {
+            var checkEmailInUse = _userRepository.findUserByEmail(request.email).isPresent();
 
-        String hashedPassword = encoder.encode(request.password);
+            if(checkEmailInUse) {
+                return "O email já está em uso";
+            };
 
-        var response = new User(request.name, request.email, hashedPassword);
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-        _userRepository.save(response);
+            String hashedPassword = encoder.encode(request.password);
 
-        return response.getId().toString();
+            var response = new User(request.name, request.email, hashedPassword);
+
+            _userRepository.save(response);
+
+            return response.getId().toString();
+
+        } catch (Exception e) {
+            return "Email já está em uso.";
+        }
     }
 
     public FindUserResponse responseUserByEmail(String email) {
@@ -75,6 +86,12 @@ public class UserService implements IUserService {
         var myUserEntity = getUserByID(myId); // Minha entidadede usuário
         var followedUserEntity = getUserByID(userFollowedId); // A entidade do usuário a ser seguido
 
+        var verifyIfImFollowing = myUserEntity.isFollowing(userFollowedId);
+
+        if (verifyIfImFollowing) {
+            throw new IllegalArgumentException("Usuário já está sendo seguido, o client lhe redirecionará pro serviço de unfollow");
+        }
+
         var myUser = new User_Model(myUserEntity.getName(), myUserEntity.getId()); // Objeto que será armazenado na Array de seguidores
         var followedUser = new User_Model(followedUserEntity.getName(), followedUserEntity.getId()); // E na array de quem estou Seguindo
 
@@ -90,6 +107,12 @@ public class UserService implements IUserService {
     public FollowerResponse unfollowManager(UUID myId, UUID userFollowedId) {
         var myUserEntity = getUserByID(myId);
         var followedUserEntity = getUserByID(userFollowedId);
+
+        var verifyIfImFollowing =  myUserEntity.isFollowing(userFollowedId);
+
+        if(!verifyIfImFollowing) {
+            throw new IllegalArgumentException("Você não está seguindo esse usuário, o client lhe encaminhará pro serviço de Follow");
+        }
 
         myUserEntity.stopFollow(userFollowedId); // Removendo o usuário da minha lista de seguidores
         followedUserEntity.lostFollow(myId); // Me removndo daa lista de seguidor da pessoa

@@ -25,11 +25,9 @@ public class AuthMiddleware implements HandlerInterceptor {
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (
-                request.getRequestURI().equals("/api/user/signup") ||
-                request.getRequestURI().equals("/api/auth") ||
-                request.getRequestURI().equals("/api/user/password")
-            ) { return true; }
+        if ( request.getRequestURI().equals("/api/user/signup") || request.getRequestURI().equals("/api/user/password")  ) { return true; }
+
+        if(request.getRequestURI().equals("/api/auth") || request.getRequestURI().equals("/api/publications") ) { return true; }
 
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

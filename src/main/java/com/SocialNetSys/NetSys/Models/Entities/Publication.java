@@ -13,19 +13,27 @@ import java.util.UUID;
 public class Publication {
     @Id
     public UUID id;
-    public UUID user_id;
+    public UUID userId;
     public String contentText;
     public String contentImage;
     public Date created_at;
     public LinkedList<Comment_Model> comments;
     public LinkedList<Like_Model> likes;
 
-    public Publication(String contentText, String contentImage, UUID user_id) {
+    public Publication(String contentText, String contentImage, UUID userId) {
         setId();
         this.contentText = contentText;
         this.contentImage = contentImage;
         this.created_at = new Date(new ObjectId().getDate().getTime());
-        this.user_id = user_id;
+        this.userId = userId;
+
+        if (this.likes == null) {
+            this.likes = new LinkedList<Like_Model>();
+        }
+
+        if (this.comments == null) {
+            this.comments = new LinkedList<Comment_Model>();
+        }
     }
 
     private void setId() {
@@ -33,30 +41,17 @@ public class Publication {
     }
 
     public void saveComment(Comment_Model comment) {
-
-        if (this.comments == null) {
-            this.comments = new LinkedList<Comment_Model>();
-        }
         this.comments.add(comment);
     }
 
     public void saveLike(Like_Model like) {
-
-        if (this.likes == null) {
-            this.likes = new LinkedList<Like_Model>();
-        }
 
         this.likes.add(like);
     }
 
     public void removeLike(UUID user_id) {
 
-        for(Like_Model like : likes) {
+        likes.removeIf(like -> like.getUser_id().equals(user_id));
 
-            if(like.getUser_id() == user_id) {
-                likes.remove(like);
-                break;
-            }
-        }
     }
 }

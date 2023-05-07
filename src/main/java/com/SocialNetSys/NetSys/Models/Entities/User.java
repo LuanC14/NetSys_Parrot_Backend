@@ -56,6 +56,18 @@ public class User {
         this.followers.add(newFollower);
     }
 
+    public boolean isFollowing(UUID userId) {
+        if (following != null) {
+            for (User_Model user : following) {
+                if (user.id.equals(userId)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
     public void stopFollow(UUID followedUserId) {
 
     following.removeIf(user -> user.getId().equals(followedUserId));

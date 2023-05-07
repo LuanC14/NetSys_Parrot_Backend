@@ -14,7 +14,6 @@ public class LikesService implements ILikesService {
     @Autowired
     IPublicationService _publicationService;
 
-
     public void setLikePublication(LikeRequest request,HttpServletRequest servletRequest, UUID post_id) {
 
         var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
@@ -23,16 +22,26 @@ public class LikesService implements ILikesService {
 
         var like = new Like_Model(request.name, user_id, post_id);
 
-        _publicationService.setLike(like);
+//        var checkUserAlreadyLikedPost = _publicationService.findLikeById(user_id, post_id);
+//
+//        if(checkUserAlreadyLikedPost != null) {
+//            throw new Error("Publicação já curtida, o client redirecionará para o serviço de descurtir");
+//
+//        }
+            _publicationService.setLike(like);
+
     }
 
     public void removeLikePublication(HttpServletRequest servletRequest, UUID post_id) {
         var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
         var user_id = UUID.fromString(userIdFromRequest);
+//
+//        var checkUserAlreadyLikedPost = _publicationService.findLikeById(user_id, post_id);
+//
+//        if(checkUserAlreadyLikedPost == null) {
+//            throw new Error("Você não curtiu esta publicação, o client lhe redirecionará para o serviço de curtir");
+//        }
 
-        _publicationService.removeLike(user_id, post_id);
-
-
+        _publicationService.unlike(user_id, post_id);
     }
-
 }

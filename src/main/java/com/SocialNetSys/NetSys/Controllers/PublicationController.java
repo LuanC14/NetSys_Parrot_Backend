@@ -3,14 +3,15 @@ package com.SocialNetSys.NetSys.Controllers;
 import com.SocialNetSys.NetSys.Models.Entities.Publication;
 import com.SocialNetSys.NetSys.Models.Requests.CommentRequest;
 import com.SocialNetSys.NetSys.Models.Requests.PublicationRequest;
+import com.SocialNetSys.NetSys.Models.Responses.PublicationResponse;
 import com.SocialNetSys.NetSys.Services.Comment.ICommentService;
 import com.SocialNetSys.NetSys.Services.Publications.IPublicationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,9 +19,15 @@ import java.util.UUID;
 public class PublicationController {
     @Autowired
     IPublicationService _publicationService;
-
     @Autowired
     ICommentService _commentService;
+    @GetMapping(path = "/{userId}")
+    ResponseEntity<List<PublicationResponse>> findPublication(@PathVariable UUID userId) {
+
+       var response = _publicationService.findPublications(userId);
+
+        return ResponseEntity.ok().body(response);
+    };
     @PostMapping()
     ResponseEntity<Publication> createPublication(@RequestBody PublicationRequest request, HttpServletRequest servletRequest) {
 
@@ -36,6 +43,4 @@ public class PublicationController {
 
         return ResponseEntity.ok().body("Comentário adicionado");
     }
-
-
 }
