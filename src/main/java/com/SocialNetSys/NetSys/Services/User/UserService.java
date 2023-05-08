@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.UUID;
 
 @Service
@@ -55,14 +54,6 @@ public class UserService implements IUserService {
         }
     }
 
-    public FindUserResponse responseUserByEmail(String email) {
-        var user = _userRepository.findUserByEmail(email).get();
-
-        return new FindUserResponse(
-                user.getId(), user.getName(), user.getEmail(),
-                user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
-    }
-
     public FindUserResponse responseUserByUsername(String username) {
         var user = _userRepository.findUserByUsername(username).get();
 
@@ -88,14 +79,6 @@ public class UserService implements IUserService {
     public void saveBiographyInDB(UUID id, Biography_Model bio) {
         var user = _userRepository.findById(id).get();
         user.setBiography(bio);
-
-        _userRepository.save(user);
-    }
-
-    public void saveAvatarInDB(String avatar, UUID userId) {
-
-        var user = _userRepository.findById(userId).get();
-        user.setAvatar(avatar);
 
         _userRepository.save(user);
     }

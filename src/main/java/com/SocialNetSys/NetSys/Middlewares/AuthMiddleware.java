@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -17,11 +18,13 @@ import java.security.Key;
 
 @Component
 public class AuthMiddleware implements HandlerInterceptor {
+    @Value("${jwt.secret}")
+    protected String decryptedKey;
 
     @Override
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
 
-         final Key secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode("26462948404D635166546A576E5A7234753778214125442A472D4B614E645267"));
+        final Key secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(decryptedKey));
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 

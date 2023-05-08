@@ -6,13 +6,12 @@ import com.SocialNetSys.NetSys.Services.Publications.IPublicationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.UUID;
 
 @Service
 public class CommentService implements ICommentService {
     @Autowired
-    IPublicationService _publicationService;
+    private IPublicationService _publicationService;
 
     public void handleComment(CommentRequest request, HttpServletRequest servletRequest, UUID post_id) {
 

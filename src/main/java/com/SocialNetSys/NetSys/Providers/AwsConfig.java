@@ -5,14 +5,16 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AwsConfig {
-
-    protected String ACESS_KEY = "AKIA33ZUHOYIVYNWGE7F";
-    protected String SECRET_KEY = "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";
+    @Value("${aws.acess.key}")
+    protected String ACESS_KEY;
+    @Value("${aws.secret.key}")
+    protected String SECRET_KEY;
     protected  String ENDPOINT_NAME = "s3.us-east-2.amazonaws.com";
     protected  String REGION = "us-east-2";
 

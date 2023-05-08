@@ -12,8 +12,8 @@ import java.util.UUID;
 @Data
 public class Publication {
     @Id
-    public UUID id;
-    public UUID userId;
+    private UUID id;
+    private UUID userId;
     public String nameAuthor;
     public String contentText;
     public String contentImage;
