@@ -1,10 +1,8 @@
 package com.SocialNetSys.NetSys.Services.Publications;
 
 import com.SocialNetSys.NetSys.Models.Entities.Publication;
-import com.SocialNetSys.NetSys.Models.Entities.User;
 import com.SocialNetSys.NetSys.Models.Objects.Comment_Model;
 import com.SocialNetSys.NetSys.Models.Objects.Like_Model;
-import com.SocialNetSys.NetSys.Models.Requests.PublicationRequest;
 import com.SocialNetSys.NetSys.Models.Responses.PublicationResponse;
 import com.SocialNetSys.NetSys.Repositories.PublicationRepository;
 import com.SocialNetSys.NetSys.Services.FileUpload.IFileUploadService;

@@ -5,12 +5,12 @@ import com.SocialNetSys.NetSys.Services.User.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.UUID;
+
 @Service
 public class FollowService implements  IFollowService {
     @Autowired
-    IUserService _userService;
+    private IUserService _userService;
 
     public FollowerResponse followUser(HttpServletRequest servletRequest, UUID userFollowedId) {
 

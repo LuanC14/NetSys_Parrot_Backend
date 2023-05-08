@@ -6,13 +6,13 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-
 import java.security.Key;
 import java.util.Date;
 import java.util.UUID;
 @Service
 public class JwtService implements IJwtService {
+    @Value("${jwt.secret}")
+    protected String decryptedKey;
 
     public String generateToken(UUID userID) {
 
@@ -29,8 +29,7 @@ public class JwtService implements IJwtService {
                 .compact();
     }
     private Key genSignInKey() {
-        String secret = "26462948404D635166546A576E5A7234753778214125442A472D4B614E645267";
 
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(decryptedKey));
     }
 }

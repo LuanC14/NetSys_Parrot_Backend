@@ -18,11 +18,6 @@ public class UserController {
     @Autowired
     private IUserService _userService;
 
-    @GetMapping("/email")
-    public ResponseEntity<FindUserResponse> getUser(String email) {
-
-        return ResponseEntity.ok().body(_userService.responseUserByEmail(email));
-    }
     @GetMapping("/username")
     public ResponseEntity<FindUserResponse> getUserByUsername(String username) {
 

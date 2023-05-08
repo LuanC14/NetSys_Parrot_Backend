@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.UUID;
+
 @Service
 public class BiographyService implements IBiographyService {
     @Autowired
