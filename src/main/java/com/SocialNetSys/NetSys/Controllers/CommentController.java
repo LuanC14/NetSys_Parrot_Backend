@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 @RestController
-@RequestMapping("/api/comment")
+@RequestMapping("/api/v1/publications/comment")
 public class CommentController {
     @Autowired
     ICommentService _commentService;
@@ -17,8 +17,16 @@ public class CommentController {
     @PostMapping(path = "/{post_id}")
     ResponseEntity<String> createComment(@RequestBody CommentRequest request, HttpServletRequest servletRequest, @PathVariable UUID post_id) {
 
-        _commentService.handleComment(request, servletRequest, post_id);
+        _commentService.createComment(request, servletRequest, post_id);
 
         return ResponseEntity.ok().body("Comentário adicionado");
+    }
+
+    @DeleteMapping("/{postId}/{commentId}")
+    ResponseEntity<String> deleteComment(
+            @PathVariable("postId") UUID postId, @PathVariable("commentId") UUID commentId, HttpServletRequest servletRequest) {
+
+        _commentService.removeComment(postId, servletRequest, commentId);
+        return ResponseEntity.ok().body("Comentário deletado");
     }
 }

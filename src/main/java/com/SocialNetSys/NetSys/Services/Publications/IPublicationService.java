@@ -17,13 +17,19 @@ public interface IPublicationService {
 
     public String imageForPublication(MultipartFile photo, Publication publication) throws Exception;
 
+    public Publication findPublicationById(UUID postId);
+
+    public void deletePublication(UUID postId);
+
     public List<PublicationResponse> findPublications(UUID user_id);
 
-    public void createComment(UUID publi_id, Comment_Model comment);
+    public void saveNewComment(UUID publi_id, Comment_Model comment);
 
-    public void setLike(Like_Model like);
+    public void saveWithoutCommentDeleted(Publication publicationWithoutComment);
 
-    public void unlike(UUID user_id, UUID post_id);
+    public void saveWithNewLike(Like_Model like);
+
+    public void saveWithoutRemovedLike(UUID user_id, UUID post_id);
 
     public boolean verifyIfUserAlreadyLiked(UUID userId, UUID postId);
 }

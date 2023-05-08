@@ -28,11 +28,15 @@ public class AuthMiddleware implements HandlerInterceptor {
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if ( request.getRequestURI().equals("/api/user/signup") || request.getRequestURI().equals("/api/user/password")  ) { return true; }
+        if ( request.getRequestURI().equals("/api/v1/user/signup") || request.getRequestURI().equals("/api/v1/user/newpassword")  ) { return true; }
 
-        if(request.getRequestURI().equals("/api/auth") || request.getRequestURI().equals("/api/publications") ) { return true; }
+        if(request.getRequestURI().equals("/api/v1/auth") || request.getRequestURI().equals("/api/v1/publications") ) { return true; }
 
-        if(request.getRequestURI().equals("/api/user/username") || request.getRequestURI().equals("/api/user/email") ) { return  true; }
+        if(request.getRequestURI().equals("/api/v1/user/username") || request.getRequestURI().equals("/api/v1/user/email") ) { return  true; }
+
+        if (request.getRequestURI().contains("/swagger-ui.html") || request.getRequestURI().equals("/v2/api-docs")) {
+            return true;
+        }
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             throw new RuntimeException("Token not found");

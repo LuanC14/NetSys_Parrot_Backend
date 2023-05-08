@@ -4,8 +4,10 @@ import com.SocialNetSys.NetSys.Models.Objects.Comment_Model;
 import com.SocialNetSys.NetSys.Models.Objects.Like_Model;
 import lombok.Data;
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.UUID;
@@ -17,7 +19,7 @@ public class Publication {
     public String nameAuthor;
     public String contentText;
     public String contentImage;
-    public Date created_at;
+    public LocalDateTime created_at;
     public LinkedList<Comment_Model> comments;
     public LinkedList<Like_Model> likes;
 
@@ -25,7 +27,7 @@ public class Publication {
         setId();
         this.nameAuthor = nameAuthor;
         this.contentText = contentText;
-        this.created_at = new Date(new ObjectId().getDate().getTime());
+        this.created_at = LocalDateTime.now();
         this.userId = userId;
 
         if (this.likes == null) {
