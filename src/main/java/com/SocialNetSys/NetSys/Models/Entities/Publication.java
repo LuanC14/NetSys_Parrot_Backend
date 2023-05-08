@@ -21,11 +21,10 @@ public class Publication {
     public LinkedList<Comment_Model> comments;
     public LinkedList<Like_Model> likes;
 
-    public Publication(String nameAuthor, String contentText, String contentImage, UUID userId) {
+    public Publication(String nameAuthor, String contentText,  UUID userId) {
         setId();
         this.nameAuthor = nameAuthor;
         this.contentText = contentText;
-        this.contentImage = contentImage;
         this.created_at = new Date(new ObjectId().getDate().getTime());
         this.userId = userId;
 

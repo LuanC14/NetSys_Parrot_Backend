@@ -25,8 +25,6 @@ public interface IUserService {
 
     public void saveBiographyInDB(UUID id, Biography_Model bio);
 
-    public void saveAvatarInDB(String avatar, UUID userId);
-
     public FollowerResponse followManager(UUID myId, UUID userFollowedId);
 
     public void changePassword(ChangePasswordRequest request);

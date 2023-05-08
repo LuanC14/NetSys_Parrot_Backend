@@ -183,7 +183,6 @@ public class UserService implements IUserService {
 
     var user = _userRepository.findById(userId).get();
 
-
     var photoUri = "";
 
     try {
