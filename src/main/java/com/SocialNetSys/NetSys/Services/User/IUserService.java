@@ -8,6 +8,7 @@ import com.SocialNetSys.NetSys.Models.Responses.FindUserResponse;
 import com.SocialNetSys.NetSys.Models.Requests.UserRequest;
 import com.SocialNetSys.NetSys.Models.Responses.FollowerResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -24,8 +25,6 @@ public interface IUserService {
 
     public void saveBiographyInDB(UUID id, Biography_Model bio);
 
-    public void saveAvatarInDB(String avatar, UUID userId);
-
     public FollowerResponse followManager(UUID myId, UUID userFollowedId);
 
     public void changePassword(ChangePasswordRequest request);
@@ -33,4 +32,7 @@ public interface IUserService {
     public void changeName(ChangeNameRequest request, HttpServletRequest servletRequest);
 
     public FollowerResponse unfollowManager(UUID myId, UUID userFollowedId);
+
+    public void uploadPhotoProfile(MultipartFile photo, HttpServletRequest servletRequest) throws  Exception;
+
 }

@@ -6,13 +6,16 @@ import com.SocialNetSys.NetSys.Models.Objects.Like_Model;
 import com.SocialNetSys.NetSys.Models.Requests.PublicationRequest;
 import com.SocialNetSys.NetSys.Models.Responses.PublicationResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface IPublicationService {
 
-    public Publication createPublication(PublicationRequest request, HttpServletRequest servlet);
+    public Publication createPublication(String title, MultipartFile photo, HttpServletRequest servlet) throws Exception;
+
+    public String imageForPublication(MultipartFile photo, Publication publication) throws Exception;
 
     public List<PublicationResponse> findPublications(UUID user_id);
 

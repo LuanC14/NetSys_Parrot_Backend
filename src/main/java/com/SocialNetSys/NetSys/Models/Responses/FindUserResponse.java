@@ -11,6 +11,7 @@ public class FindUserResponse {
     public String name;
     public String email;
     public String username;
+    public String avatarUri;
     public LinkedList<User_Model> followers;
     public LinkedList<User_Model> following;
 
@@ -19,12 +20,13 @@ public class FindUserResponse {
 
     public FindUserResponse (
             UUID id, String name, String email, String username,
-            LinkedList<User_Model> followers, LinkedList<User_Model> following, LinkedList<Biography_Model> biography ) {
+            LinkedList<User_Model> followers, LinkedList<User_Model> following, LinkedList<Biography_Model> biography, String avatarUri ) {
 
         this.id = id;
         this.name = name;
         this.email = email;
         this.username = username;
+        this.avatarUri = avatarUri;
         this.followers = followers;
         this.following = following;
         this.biography = biography;
