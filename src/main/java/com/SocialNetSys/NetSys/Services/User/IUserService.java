@@ -15,7 +15,9 @@ import java.util.UUID;
 public interface IUserService {
     public String createUser(UserRequest request);
 
-    public FindUserResponse responseUserByUsername(String username);
+    public FindUserResponse findUserByUsername(String username);
+
+    public FindUserResponse findUSerByEmail(String email);
 
     public User getUserByEmail(String email);
 

@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/publication")
+@RequestMapping("/api/v1/publications")
 public class PublicationController {
     @Autowired
     IPublicationService _publicationService;
@@ -25,7 +25,7 @@ public class PublicationController {
 
         return ResponseEntity.ok().body(response);
     };
-    @PostMapping()
+    @PostMapping("/new")
     ResponseEntity<Publication> createPublication(
         @RequestParam(name = "title", required = false) String title, @RequestParam(name = "photo", required = false) MultipartFile  photo, HttpServletRequest servletRequest) throws Exception {
 
@@ -37,4 +37,10 @@ public class PublicationController {
 
         return ResponseEntity.ok().body(response);
     };
+
+    @DeleteMapping("/{postId}")
+    ResponseEntity<String> deletePublication(@PathVariable UUID postId) {
+        _publicationService.deletePublication(postId);
+        return ResponseEntity.ok().body("Post deletado");
+    }
 }

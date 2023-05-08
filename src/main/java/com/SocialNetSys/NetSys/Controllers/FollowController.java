@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 @RestController
-@RequestMapping("/api/follows")
+@RequestMapping("/api/v1/follows")
 public class FollowController {
     @Autowired
     IFollowService _followService;

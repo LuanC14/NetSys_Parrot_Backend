@@ -30,7 +30,7 @@ public class LikesService implements ILikesService {
 
         var like = new Like_Model(userLiked, userId, postId);
 
-            _publicationService.setLike(like);
+            _publicationService.saveWithNewLike(like);
     }
 
     public void removeLikePublication(HttpServletRequest servletRequest, UUID postId) {
@@ -40,6 +40,6 @@ public class LikesService implements ILikesService {
         if(!_publicationService.verifyIfUserAlreadyLiked(userId, postId)) {
             throw new IllegalArgumentException("Você não curtiu essa publicação, utilize o serviço de like");
         }
-        _publicationService.unlike(userId, postId);
+        _publicationService.saveWithoutRemovedLike(userId, postId);
     }
 }

@@ -62,6 +62,10 @@ public class PublicationService implements IPublicationService {
         return photoUri;
     }
 
+    public void deletePublication(UUID postId) {
+        _publicationRepository.deleteById(postId);
+    }
+
     public List<PublicationResponse> findPublications(UUID userId) {
 
         var publications = _publicationRepository.findAllByUserId(userId);
@@ -90,7 +94,13 @@ public class PublicationService implements IPublicationService {
         }
     }
 
-    public void createComment(UUID postId, Comment_Model comment) {
+    public Publication findPublicationById(UUID postId) {
+        return _publicationRepository.findById(postId).get();
+    }
+
+    // For External Services
+
+    public void saveNewComment(UUID postId, Comment_Model comment) {
         var publication = _publicationRepository.findById(postId).get();
 
         publication.saveComment(comment);
@@ -98,7 +108,11 @@ public class PublicationService implements IPublicationService {
         _publicationRepository.save(publication);
     }
 
-   public void setLike(Like_Model like) {
+    public void saveWithoutCommentDeleted(Publication publicationWithoutComment) {
+        _publicationRepository.save(publicationWithoutComment);
+    }
+
+   public void saveWithNewLike(Like_Model like) {
         var postId = like.getPostId();
         var publication = _publicationRepository.findById(postId).get();
 
@@ -120,7 +134,7 @@ public class PublicationService implements IPublicationService {
        return false;
    }
 
-   public void unlike(UUID userId, UUID postId) {
+   public void saveWithoutRemovedLike(UUID userId, UUID postId) {
        var post = _publicationRepository.findById(postId).get();
 
        post.removeLike(userId);

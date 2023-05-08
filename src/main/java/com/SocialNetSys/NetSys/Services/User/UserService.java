@@ -54,7 +54,15 @@ public class UserService implements IUserService {
         }
     }
 
-    public FindUserResponse responseUserByUsername(String username) {
+    public FindUserResponse findUSerByEmail(String email) {
+        var user = _userRepository.findUserByEmail(email).get();
+
+        return new FindUserResponse(
+                user.getId(), user.getName(), user.getEmail(),
+                user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
+    }
+
+    public FindUserResponse findUserByUsername(String username) {
         var user = _userRepository.findUserByUsername(username).get();
 
         return new FindUserResponse(
