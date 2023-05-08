@@ -8,6 +8,7 @@ import com.SocialNetSys.NetSys.Models.Responses.FindUserResponse;
 import com.SocialNetSys.NetSys.Models.Requests.UserRequest;
 import com.SocialNetSys.NetSys.Models.Responses.FollowerResponse;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -33,4 +34,7 @@ public interface IUserService {
     public void changeName(ChangeNameRequest request, HttpServletRequest servletRequest);
 
     public FollowerResponse unfollowManager(UUID myId, UUID userFollowedId);
+
+    public void uploadPhotoProfile(MultipartFile photo, HttpServletRequest servletRequest) throws  Exception;
+
 }

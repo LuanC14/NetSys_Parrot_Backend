@@ -9,10 +9,12 @@ import com.SocialNetSys.NetSys.Models.Responses.FindUserResponse;
 import com.SocialNetSys.NetSys.Models.Requests.UserRequest;
 import com.SocialNetSys.NetSys.Models.Responses.FollowerResponse;
 import com.SocialNetSys.NetSys.Repositories.UserRepository;
+import com.SocialNetSys.NetSys.Services.FileUpload.IFileUploadService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -20,6 +22,9 @@ import java.util.UUID;
 public class UserService implements IUserService {
     @Autowired
     private UserRepository _userRepository;
+
+    @Autowired
+    private IFileUploadService _fileUploadService;
 
     public String createUser(UserRequest request) {
 
@@ -55,7 +60,7 @@ public class UserService implements IUserService {
 
         return new FindUserResponse(
                 user.getId(), user.getName(), user.getEmail(),
-                user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography());
+                user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
     }
 
     public FindUserResponse responseUserByUsername(String username) {
@@ -63,7 +68,7 @@ public class UserService implements IUserService {
 
         return new FindUserResponse(
                 user.getId(), user.getName(), user.getEmail(),
-                user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography());
+                user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
     }
     public User getUserByEmail(String email) {
         var optionalUser = _userRepository.findUserByEmail(email);
@@ -169,6 +174,29 @@ public class UserService implements IUserService {
 
         user.setName(request.name);
 
+        _userRepository.save(user);
+    }
+
+    public void uploadPhotoProfile(MultipartFile photo, HttpServletRequest servletRequest) throws Exception {
+    var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
+    var userId = UUID.fromString(userIdFromRequest);
+
+    var user = _userRepository.findById(userId).get();
+
+
+    var photoUri = "";
+
+    try {
+
+    var filename = user.getId() + "." + photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
+
+    photoUri = _fileUploadService.upload(photo, filename);
+
+    } catch (Exception e) {
+        throw new Exception(e.getMessage());
+    }
+
+        user.setAvatar(photoUri);
         _userRepository.save(user);
     }
 }
