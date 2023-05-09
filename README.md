@@ -32,11 +32,12 @@ Endereço dos arquivos:
 # Entidades
 A aplicação possui duas entidades no banco de dados, a de Usuários e a de publicação.
 
+Endereço do arquivo: 
+- /Models/Entities/User
+
 ## Entidade de  Usuários
 Essa entidade possui 9 campos, sendo eles Id, Email, name, username, password, Biografia, Seguidores, seguindo e Avatar.
 
-Endereço do arquivo: 
-- /Models/Entities/Publication
 
 ### Usuários: Name, username, email e password.
 São dados requeridos na criação do usuário, e enviados pelo Endpoint **/api/v1/user**, através do verbo POST, na rota **/signup**.
