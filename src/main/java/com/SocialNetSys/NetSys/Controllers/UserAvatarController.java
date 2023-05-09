@@ -1,6 +1,7 @@
 package com.SocialNetSys.NetSys.Controllers;
 
 import com.SocialNetSys.NetSys.Services.User.IUserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +20,11 @@ public class UserAvatarController {
     private IUserService _userService;
 
     @PatchMapping()
-    public ResponseEntity addPhoto(@RequestParam("photo") MultipartFile photo, HttpServletRequest servletRequest) {
+    @Operation(description = "Altera foto de avatar (Perfil do usuário). Arquivo vem do MultipartForm e é necessário estar com o Token")
+    public ResponseEntity<String> updateAvatarProfile(@RequestParam("photo") MultipartFile photo, HttpServletRequest servletRequest) {
 
-        try{
             _userService.uploadPhotoProfile(photo, servletRequest);
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+
+            return ResponseEntity.ok().body("Foto atualizada");
     }
 }
