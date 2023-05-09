@@ -14,14 +14,16 @@ public class CommentService implements ICommentService {
     @Autowired
     private IPublicationService _publicationService;
 
-    public void createComment(CommentRequest request, HttpServletRequest servletRequest, UUID post_id) throws Exception {
+    public void createComment(CommentRequest request, HttpServletRequest servletRequest, UUID postId) throws Exception {
 
         var authorIdFromRequest = (String) servletRequest.getAttribute("user_id");
         var author_id = UUID.fromString(authorIdFromRequest);
+        var publication = _publicationService.findPublicationById(postId);
 
         try {
-            var comment = new Comment_Model(request.content, post_id, author_id);
-            _publicationService.saveNewComment(post_id, comment);
+            var comment = new Comment_Model(request.content, postId, author_id);
+            publication.saveComment(comment);
+            _publicationService.updatePublicationInDB(publication);
 
         } catch (Exception e) {
             throw  new Exception(e.getMessage());
@@ -48,7 +50,8 @@ public class CommentService implements ICommentService {
                 }
             }
 
-            _publicationService.saveWithoutCommentDeleted(publication);
+            _publicationService.updatePublicationInDB(publication);
+
             return publication;
 
         } catch (Exception e) {

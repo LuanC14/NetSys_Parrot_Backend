@@ -10,4 +10,6 @@ public interface ILikesService {
     public void setLikePublication(HttpServletRequest servletRequest, UUID post_id);
 
     public void removeLikePublication(HttpServletRequest servletRequest, UUID post_id);
+
+    public boolean verifyIfUserAlreadyLikedThePost(UUID userId, UUID postId);
 }

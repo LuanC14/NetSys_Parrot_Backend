@@ -118,57 +118,13 @@ public class PublicationService implements IPublicationService {
         }
     }
 
+    public void updatePublicationInDB(Publication publication) {
+        _publicationRepository.save(publication);
+    }
+
     // For External Services
 
-    public void saveNewComment(UUID postId, Comment_Model comment) {
-        var optionalPublication = _publicationRepository.findById(postId);
 
-        if(optionalPublication.isPresent()) {
-            var publication = optionalPublication.get();
-            publication.saveComment(comment);
-            _publicationRepository.save(publication);
-
-        } else {
-            throw new RuntimeException("Usuário não encontrado");
-        }
-    }
-
-    public void saveWithoutCommentDeleted(Publication publicationWithoutComment) {
-        _publicationRepository.save(publicationWithoutComment);
-    }
-
-   public void saveWithNewLike(Like_Model like) {
-        var postId = like.getPostId();
-        var optionalPublication = _publicationRepository.findById(postId);
-
-        if(optionalPublication.isPresent()) {
-            var publication = optionalPublication.get();
-            publication.saveLike(like);
-            _publicationRepository.save(publication);
-
-        } else {
-            throw new RuntimeException("Publicação não encontrada");
-        }
-   }
-
-   public boolean verifyIfUserAlreadyLiked(UUID userId, UUID postId) {
-       var optionalPublication = _publicationRepository.findById(postId);
-
-       if(optionalPublication.isPresent()) {
-           var publication = optionalPublication.get();
-           var likes = publication.likes;
-
-           for(Like_Model like : likes) {
-               if(like.getUserId().equals(userId)) {
-                   return true;
-               }
-           }
-           return false;
-
-       } else  {
-           throw new RuntimeException("Não foi possível encontrar o usuário, verifique o ID da publicação");
-       }
-   }
 
    public void saveWithoutRemovedLike(UUID userId, UUID postId) {
        var optionalPublication = _publicationRepository.findById(postId);

@@ -22,7 +22,13 @@ public class LikesService implements ILikesService {
 
         var userId = UUID.fromString(userIdFromRequest);
 
-        if(_publicationService.verifyIfUserAlreadyLiked(userId, postId)) {
+        var publication = _publicationService.findPublicationById(postId);
+
+        if(publication == null) {
+            throw new RuntimeException("Publicação não encontrada");
+        }
+
+        if(verifyIfUserAlreadyLikedThePost(userId, postId)) {
             throw new RuntimeException("Você já curtiu essa publicação, utilize o serviço de unlike");
         }
 
@@ -30,16 +36,37 @@ public class LikesService implements ILikesService {
 
         var like = new Like_Model(userLiked, userId, postId);
 
-            _publicationService.saveWithNewLike(like);
+            publication.saveLike(like);
+
+        _publicationService.updatePublicationInDB(publication);
     }
 
     public void removeLikePublication(HttpServletRequest servletRequest, UUID postId) {
         var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
         var userId = UUID.fromString(userIdFromRequest);
 
-        if(!_publicationService.verifyIfUserAlreadyLiked(userId, postId)) {
+        if(verifyIfUserAlreadyLikedThePost(userId, postId)) {
             throw new RuntimeException("Você não curtiu essa publicação, utilize o serviço de like");
         }
         _publicationService.saveWithoutRemovedLike(userId, postId);
+    }
+
+    public boolean verifyIfUserAlreadyLikedThePost(UUID userId, UUID postId) {
+        var publication = _publicationService.findPublicationById(postId);
+
+        if(publication != null) {
+
+            var likes = publication.likes;
+
+            for(Like_Model like : likes) {
+                if(like.getUserId().equals(userId)) {
+                    return true;
+                }
+            }
+            return false;
+
+        } else  {
+            throw new RuntimeException("Não foi possível encontrar o usuário, verifique o ID da publicação");
+        }
     }
 }
