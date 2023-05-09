@@ -15,6 +15,8 @@ public interface IPublicationService {
 
     public Publication createPublication(String title, MultipartFile photo, HttpServletRequest servlet) throws Exception;
 
+    public void updatePublicationInDB(Publication publication);
+
     public String imageForPublication(MultipartFile photo, Publication publication) throws Exception;
 
     public Publication findPublicationById(UUID postId);
@@ -23,13 +25,6 @@ public interface IPublicationService {
 
     public List<PublicationResponse> findPublications(UUID user_id);
 
-    public void saveNewComment(UUID publi_id, Comment_Model comment);
-
-    public void saveWithoutCommentDeleted(Publication publicationWithoutComment);
-
-    public void saveWithNewLike(Like_Model like);
-
     public void saveWithoutRemovedLike(UUID user_id, UUID post_id);
 
-    public boolean verifyIfUserAlreadyLiked(UUID userId, UUID postId);
 }

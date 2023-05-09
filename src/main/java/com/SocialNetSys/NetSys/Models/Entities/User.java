@@ -32,6 +32,10 @@ public class User {
         this.biography.add(bio);
     }
 
+    public void replaceBiography(LinkedList<Biography_Model> biography) {
+        this.biography = biography;
+    }
+
     public void setId() {
         this.id = UUID.randomUUID();
     }

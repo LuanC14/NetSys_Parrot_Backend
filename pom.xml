@@ -75,7 +75,7 @@
 		</dependency>
 
 	</dependencies>
-
+	<packaging>jar</packaging>
 	<build>
 		<plugins>
 			<plugin>
@@ -91,7 +91,9 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>sysnet-api</finalName>
 	</build>
+
 	<repositories>
 		<repository>
 			<id>spring-milestones</id>

@@ -4,6 +4,7 @@ import com.SocialNetSys.NetSys.Models.Entities.Publication;
 import com.SocialNetSys.NetSys.Models.Objects.Comment_Model;
 import com.SocialNetSys.NetSys.Models.Objects.Like_Model;
 import com.SocialNetSys.NetSys.Models.Responses.PublicationResponse;
+import com.SocialNetSys.NetSys.Providers.FilenameCreator;
 import com.SocialNetSys.NetSys.Repositories.PublicationRepository;
 import com.SocialNetSys.NetSys.Services.FileUpload.IFileUploadService;
 import com.SocialNetSys.NetSys.Services.User.IUserService;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -34,6 +36,10 @@ public class PublicationService implements IPublicationService {
 
          var nameAuthor = _userService.getUserByID(userId).getName();
 
+         if(nameAuthor == null) {
+             throw new RuntimeException("Usuário não autenticado");
+         }
+
         var publication = new Publication(nameAuthor, title, userId);
 
         if(photo != null) {
@@ -51,8 +57,8 @@ public class PublicationService implements IPublicationService {
     var photoUri = "";
 
     try {
-
-    var filename = publication.getId() +"."+photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".")+1);
+    var filename = FilenameCreator.nameGenerator(publication.getId(), Objects.requireNonNull(photo.getOriginalFilename()));
+//    var filename = publication.getId() +"."+photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".")+1);
 
     photoUri = _fileUploadService.upload(photo, filename);
 
@@ -63,7 +69,14 @@ public class PublicationService implements IPublicationService {
     }
 
     public void deletePublication(UUID postId) {
-        _publicationRepository.deleteById(postId);
+
+        var optionalPublication = _publicationRepository.findById(postId);
+
+        if(optionalPublication.isPresent()) {
+            _publicationRepository.deleteById(postId);
+        } else {
+            throw  new RuntimeException("Publicação não encontrada");
+        }
     }
 
     public List<PublicationResponse> findPublications(UUID userId) {
@@ -95,50 +108,34 @@ public class PublicationService implements IPublicationService {
     }
 
     public Publication findPublicationById(UUID postId) {
-        return _publicationRepository.findById(postId).get();
+
+        var optionalPublication = _publicationRepository.findById(postId);
+
+        if(optionalPublication.isPresent()) {
+            return optionalPublication.get();
+        } else {
+            throw  new RuntimeException("Publicação não encontrada ou ID inválido");
+        }
+    }
+
+    public void updatePublicationInDB(Publication publication) {
+        _publicationRepository.save(publication);
     }
 
     // For External Services
 
-    public void saveNewComment(UUID postId, Comment_Model comment) {
-        var publication = _publicationRepository.findById(postId).get();
 
-        publication.saveComment(comment);
-
-        _publicationRepository.save(publication);
-    }
-
-    public void saveWithoutCommentDeleted(Publication publicationWithoutComment) {
-        _publicationRepository.save(publicationWithoutComment);
-    }
-
-   public void saveWithNewLike(Like_Model like) {
-        var postId = like.getPostId();
-        var publication = _publicationRepository.findById(postId).get();
-
-        publication.saveLike(like);
-
-       _publicationRepository.save(publication);
-   }
-
-   public boolean verifyIfUserAlreadyLiked(UUID userId, UUID postId) {
-       var publication = _publicationRepository.findById(postId).get();
-
-       var likes = publication.likes;
-
-       for(Like_Model like : likes) {
-           if(like.getUserId().equals(userId)) {
-               return true;
-           }
-       }
-       return false;
-   }
 
    public void saveWithoutRemovedLike(UUID userId, UUID postId) {
-       var post = _publicationRepository.findById(postId).get();
+       var optionalPublication = _publicationRepository.findById(postId);
 
-       post.removeLike(userId);
+       if(optionalPublication.isPresent()) {
+           var publication = optionalPublication.get();
+           publication.removeLike(userId);
+           _publicationRepository.save(publication);
+       } else {
+           throw new RuntimeException("Não foi possível encontrar o usuário, verifique o ID da publicação");
+       }
 
-       _publicationRepository.save(post);
    }
 }

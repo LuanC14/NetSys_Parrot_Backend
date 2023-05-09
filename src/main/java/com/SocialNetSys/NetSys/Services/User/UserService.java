@@ -32,11 +32,11 @@ public class UserService implements IUserService {
             var checkUsernameAlreadyInUse = _userRepository.findUserByUsername(request.username).isPresent();
 
             if(checkEmailInUse) {
-                return "O email já está em uso";
+                throw new RuntimeException("O email já está em uso");
             };
 
             if(checkUsernameAlreadyInUse) {
-                return "O @username já está em uso";
+                throw  new RuntimeException("O @username já está em uso");
             }
 
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -50,24 +50,36 @@ public class UserService implements IUserService {
             return response.getId().toString();
 
         } catch (Exception e) {
-            return "Email já está em uso.";
+           throw  new RuntimeException("Não foi possível realizar o cadastro.");
         }
     }
 
     public FindUserResponse findUSerByEmail(String email) {
-        var user = _userRepository.findUserByEmail(email).get();
+        var optionalUser = _userRepository.findUserByEmail(email);
 
-        return new FindUserResponse(
-                user.getId(), user.getName(), user.getEmail(),
-                user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
+        if(optionalUser.isPresent()) {
+            var user = optionalUser.get();
+
+            return new FindUserResponse(
+                    user.getId(), user.getName(), user.getEmail(),
+                    user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
+        } else  {
+            throw new RuntimeException("Usuáario não encontrado");
+        }
     }
 
     public FindUserResponse findUserByUsername(String username) {
-        var user = _userRepository.findUserByUsername(username).get();
+        var optionalUser = _userRepository.findUserByUsername(username);
 
-        return new FindUserResponse(
-                user.getId(), user.getName(), user.getEmail(),
-                user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
+        if(optionalUser.isPresent()) {
+            var user = optionalUser.get();
+
+            return new FindUserResponse(
+                    user.getId(), user.getName(), user.getEmail(),
+                    user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
+        } else  {
+            throw new RuntimeException("Usuáario não encontrado");
+        }
     }
     public User getUserByEmail(String email) {
         var optionalUser = _userRepository.findUserByEmail(email);
@@ -75,7 +87,7 @@ public class UserService implements IUserService {
         if(optionalUser.isPresent()) {
             return optionalUser.get();
         } else {
-            throw new Error("User Not Found");
+            throw new Error("Usuário não encontrado");
         }
     }
 
@@ -84,61 +96,16 @@ public class UserService implements IUserService {
         return _userRepository.findById(id).get();
     }
 
-    public void saveBiographyInDB(UUID id, Biography_Model bio) {
-        var user = _userRepository.findById(id).get();
-        user.setBiography(bio);
-
+    public void updateUserInDB(User user) {
         _userRepository.save(user);
     }
 
-    public FollowerResponse followManager(UUID myId, UUID userFollowedId) {
-
-        var myUserEntity = getUserByID(myId); // Minha entidadede usuário
-        var followedUserEntity = getUserByID(userFollowedId); // A entidade do usuário a ser seguido
-
-        var verifyIfImFollowing = myUserEntity.isFollowing(userFollowedId);
-
-        if (verifyIfImFollowing) {
-            throw new IllegalArgumentException("Usuário já está sendo seguido, o client lhe redirecionará pro serviço de unfollow");
-        }
-
-        var myUser = new User_Model(myUserEntity.getName(), myUserEntity.getId(), myUserEntity.getUsername()); // Objeto que será armazenado na Array de seguidores
-        var followedUser = new User_Model(followedUserEntity.getName(), followedUserEntity.getId(), followedUserEntity.getUsername()); // E na array de quem estou Seguindo
-
-        myUserEntity.startFollow(followedUser); // Salvando o usuário que estou seguindo na  Array de quem estou seguindo
-        followedUserEntity.receiveFollow(myUser); // Salvando meus dados na Array de seguidores do usuário seguido.
-
-        _userRepository.save(myUserEntity);
-        _userRepository.save(followedUserEntity);
-
-        return new FollowerResponse(myUser.getName(), followedUser.getName());
-    }
-
-    public FollowerResponse unfollowManager(UUID myId, UUID userFollowedId) {
-        var myUserEntity = getUserByID(myId);
-        var followedUserEntity = getUserByID(userFollowedId);
-
-        var verifyIfImFollowing =  myUserEntity.isFollowing(userFollowedId);
-
-        if(!verifyIfImFollowing) {
-            throw new IllegalArgumentException("Você não está seguindo esse usuário, o client lhe encaminhará pro serviço de Follow");
-        }
-
-        myUserEntity.stopFollow(userFollowedId); // Removendo o usuário da minha lista de seguidores
-        followedUserEntity.lostFollow(myId); // Me removndo daa lista de seguidor da pessoa
-
-        _userRepository.save(myUserEntity);
-        _userRepository.save(followedUserEntity);
-
-        return new FollowerResponse(myUserEntity.getName(), followedUserEntity.getName());
-    }
-
-    public void changePassword(ChangePasswordRequest request) throws Error {
+    public void changePassword(ChangePasswordRequest request) {
 
         var user = getUserByEmail(request.email);
 
         if(user == null) {
-            throw new Error("Email ou senha inválidos");
+            throw new RuntimeException ("Email ou senha inválido");
         }
 
         var encoder = new BCryptPasswordEncoder();
@@ -152,18 +119,33 @@ public class UserService implements IUserService {
             _userRepository.save(user);
 
         } else {
-            throw  new Error("Email ou senha inválido");
+            throw  new RuntimeException("Email ou senha inválido");
         }
 
     }
 
-    public void changeName(ChangeNameRequest request, HttpServletRequest servletRequest) {
+    public void nameAndUsernameModifier(ChangeNameRequest request, HttpServletRequest servletRequest) {
         var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
         var user_id  = UUID.fromString(userIdFromRequest);
 
         var user = getUserByID(user_id);
 
-        user.setName(request.name);
+        if(request.getName() != null && request.getUsername() != null) {
+            user.setName(request.getName());
+            user.setUsername(request.getUsername());
+        }
+
+        if(request.getName() == null && request.getUsername() != null) {
+            user.setUsername(request.getUsername());
+        }
+
+        if(request.getName() != null && request.getUsername() == null) {
+            user.setName(request.getName());
+        }
+
+        if(request.getName() == null && request.getUsername() == null) {
+            throw  new RuntimeException("Operação inválida");
+        }
 
         _userRepository.save(user);
     }

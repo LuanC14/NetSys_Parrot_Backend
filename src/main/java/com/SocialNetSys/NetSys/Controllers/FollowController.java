@@ -15,7 +15,7 @@ public class FollowController {
     IFollowService _followService;
 
     @PostMapping(path = "/{userFollowedId}")
-    ResponseEntity<String> follow(HttpServletRequest servletRequest, @PathVariable UUID userFollowedId) {
+    ResponseEntity<String> follow(HttpServletRequest servletRequest, @PathVariable UUID userFollowedId) throws Exception {
 
        var response = _followService.followUser(servletRequest, userFollowedId);
 
@@ -23,7 +23,7 @@ public class FollowController {
     }
 
     @DeleteMapping(path = "/{userFollowedId}")
-    ResponseEntity<String> unfollow(HttpServletRequest servletRequest, @PathVariable UUID userFollowedId) {
+    ResponseEntity<String> unfollow(HttpServletRequest servletRequest, @PathVariable UUID userFollowedId) throws Exception {
 
         var response = _followService.unfollowUser(servletRequest, userFollowedId);
         return ResponseEntity.ok().body(response.nameFollower + " Parou de seguir " + response.nameFollowed);

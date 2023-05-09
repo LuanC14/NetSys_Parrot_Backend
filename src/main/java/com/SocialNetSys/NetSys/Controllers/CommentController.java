@@ -15,7 +15,7 @@ public class CommentController {
     ICommentService _commentService;
 
     @PostMapping(path = "/{post_id}")
-    ResponseEntity<String> createComment(@RequestBody CommentRequest request, HttpServletRequest servletRequest, @PathVariable UUID post_id) {
+    ResponseEntity<String> createComment(@RequestBody CommentRequest request, HttpServletRequest servletRequest, @PathVariable UUID post_id) throws Exception {
 
         _commentService.createComment(request, servletRequest, post_id);
 
@@ -24,7 +24,7 @@ public class CommentController {
 
     @DeleteMapping("/{postId}/{commentId}")
     ResponseEntity<String> deleteComment(
-            @PathVariable("postId") UUID postId, @PathVariable("commentId") UUID commentId, HttpServletRequest servletRequest) {
+            @PathVariable("postId") UUID postId, @PathVariable("commentId") UUID commentId, HttpServletRequest servletRequest) throws Exception {
 
         _commentService.removeComment(postId, servletRequest, commentId);
         return ResponseEntity.ok().body("Comentário deletado");

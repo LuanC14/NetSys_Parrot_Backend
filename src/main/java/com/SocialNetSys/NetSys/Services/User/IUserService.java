@@ -15,6 +15,8 @@ import java.util.UUID;
 public interface IUserService {
     public String createUser(UserRequest request);
 
+    public void updateUserInDB(User user);
+
     public FindUserResponse findUserByUsername(String username);
 
     public FindUserResponse findUSerByEmail(String email);
@@ -23,15 +25,9 @@ public interface IUserService {
 
     public User getUserByID(UUID id);
 
-    public void saveBiographyInDB(UUID id, Biography_Model bio);
-
-    public FollowerResponse followManager(UUID myId, UUID userFollowedId);
-
     public void changePassword(ChangePasswordRequest request);
 
-    public void changeName(ChangeNameRequest request, HttpServletRequest servletRequest);
-
-    public FollowerResponse unfollowManager(UUID myId, UUID userFollowedId);
+    public void nameAndUsernameModifier(ChangeNameRequest request, HttpServletRequest servletRequest);
 
     public void uploadPhotoProfile(MultipartFile photo, HttpServletRequest servletRequest) throws  Exception;
 
