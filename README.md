@@ -8,9 +8,9 @@
 -  O ambiente de desenvolvimento está na porta 8082.
 - O projeto em Docker-Compose será disponibilizado em breve.
 
-# Banco de dados e upload de arquivos
-O banco de dados utilizado na aplicação é o MongoDB, manipulado pelo framework Spring Data MongoDB.
-Para upload de arquivos, é utilizado o AWS-S3, sistema de Buckets da Amazon, conectado através da sua API gratuita.
+# Banco de dados e upload de arquivos.
+
+###### O banco de dados utilizado na aplicação é o MongoDB, manipulado pelo framework Spring Data MongoDB. Para upload de arquivos, é utilizado o AWS-S3, sistema de Buckets da Amazon, conectado através da sua API gratuita.
 ---
 # Serviço Autenticação
 A autenticação é realizada através do endpoint '/api/v1/auth', aonde realiza o verbo POST, obtendo o email e a senha, retornando os dados do usuários, além  de gerar um token de autenticação.
