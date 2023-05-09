@@ -21,10 +21,8 @@ public interface IPublicationService {
 
     public Publication findPublicationById(UUID postId);
 
-    public void deletePublication(UUID postId);
+    public void deletePublication(UUID postId, HttpServletRequest servletRequest);
 
-    public List<PublicationResponse> findPublications(UUID user_id);
-
-    public void saveWithoutRemovedLike(UUID user_id, UUID post_id);
+    public List<PublicationResponse> findAllPublications(UUID user_id);
 
 }

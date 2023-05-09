@@ -30,6 +30,10 @@ public class PublicationService implements IPublicationService {
 
     public Publication createPublication(String title, MultipartFile photo, HttpServletRequest servletRequest) throws Exception {
 
+        if(photo == null && title == null) {
+            return null;
+        }
+
          var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
 
          var userId = UUID.fromString(userIdFromRequest);
@@ -58,7 +62,6 @@ public class PublicationService implements IPublicationService {
 
     try {
     var filename = FilenameCreator.nameGenerator(publication.getId(), Objects.requireNonNull(photo.getOriginalFilename()));
-//    var filename = publication.getId() +"."+photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".")+1);
 
     photoUri = _fileUploadService.upload(photo, filename);
 
@@ -68,18 +71,27 @@ public class PublicationService implements IPublicationService {
         return photoUri;
     }
 
-    public void deletePublication(UUID postId) {
+    public void deletePublication(UUID postId, HttpServletRequest servletRequest) {
+        var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
+        var userId = UUID.fromString(userIdFromRequest);
 
         var optionalPublication = _publicationRepository.findById(postId);
 
         if(optionalPublication.isPresent()) {
+            var publication = optionalPublication.get();
+
+            if(!publication.getUserId().equals(userId)) {
+                throw  new RuntimeException("Você não pode excluir a publicação de outro usuário");
+            }
+
             _publicationRepository.deleteById(postId);
+
         } else {
             throw  new RuntimeException("Publicação não encontrada");
         }
     }
 
-    public List<PublicationResponse> findPublications(UUID userId) {
+    public List<PublicationResponse> findAllPublications(UUID userId) {
 
         var publications = _publicationRepository.findAllByUserId(userId);
 
@@ -122,20 +134,4 @@ public class PublicationService implements IPublicationService {
         _publicationRepository.save(publication);
     }
 
-    // For External Services
-
-
-
-   public void saveWithoutRemovedLike(UUID userId, UUID postId) {
-       var optionalPublication = _publicationRepository.findById(postId);
-
-       if(optionalPublication.isPresent()) {
-           var publication = optionalPublication.get();
-           publication.removeLike(userId);
-           _publicationRepository.save(publication);
-       } else {
-           throw new RuntimeException("Não foi possível encontrar o usuário, verifique o ID da publicação");
-       }
-
-   }
 }

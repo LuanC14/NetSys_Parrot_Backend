@@ -129,6 +129,11 @@ public class UserService implements IUserService {
         var user_id  = UUID.fromString(userIdFromRequest);
 
         var user = getUserByID(user_id);
+        var checkUsernameAlreadyInUse = _userRepository.findUserByUsername(request.username).isPresent();
+
+        if(checkUsernameAlreadyInUse) {
+            throw new RuntimeException("O username já está em uso");
+        }
 
         if(request.getName() != null && request.getUsername() != null) {
             user.setName(request.getName());
@@ -150,7 +155,7 @@ public class UserService implements IUserService {
         _userRepository.save(user);
     }
 
-    public void uploadPhotoProfile(MultipartFile photo, HttpServletRequest servletRequest) throws Exception {
+    public void uploadPhotoProfile(MultipartFile photo, HttpServletRequest servletRequest)  {
     var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
     var userId = UUID.fromString(userIdFromRequest);
 
@@ -165,7 +170,7 @@ public class UserService implements IUserService {
     photoUri = _fileUploadService.upload(photo, filename);
 
     } catch (Exception e) {
-        throw new Exception(e.getMessage());
+        throw new RuntimeException(e.getMessage());
     }
 
         user.setAvatar(photoUri);

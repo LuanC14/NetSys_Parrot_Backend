@@ -45,10 +45,23 @@ public class LikesService implements ILikesService {
         var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
         var userId = UUID.fromString(userIdFromRequest);
 
-        if(verifyIfUserAlreadyLikedThePost(userId, postId)) {
+        if(!verifyIfUserAlreadyLikedThePost(userId, postId)) {
             throw new RuntimeException("Você não curtiu essa publicação, utilize o serviço de like");
         }
-        _publicationService.saveWithoutRemovedLike(userId, postId);
+
+        try{
+            var publication = _publicationService.findPublicationById(postId);
+
+            if(publication == null) {
+                throw  new RuntimeException("Publicação não encontrada");
+            }
+            publication.removeLike(userId);
+            _publicationService.updatePublicationInDB(publication);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
     }
 
     public boolean verifyIfUserAlreadyLikedThePost(UUID userId, UUID postId) {
@@ -63,10 +76,11 @@ public class LikesService implements ILikesService {
                     return true;
                 }
             }
-            return false;
 
         } else  {
             throw new RuntimeException("Não foi possível encontrar o usuário, verifique o ID da publicação");
         }
+
+        return false;
     }
 }

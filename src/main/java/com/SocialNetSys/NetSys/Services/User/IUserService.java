@@ -29,6 +29,6 @@ public interface IUserService {
 
     public void nameAndUsernameModifier(ChangeNameRequest request, HttpServletRequest servletRequest);
 
-    public void uploadPhotoProfile(MultipartFile photo, HttpServletRequest servletRequest) throws  Exception;
+    public void uploadPhotoProfile(MultipartFile photo, HttpServletRequest servletRequest) ;
 
 }
