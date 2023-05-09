@@ -1,5 +1,6 @@
 package com.SocialNetSys.NetSys.Services.Follows;
 
+import com.SocialNetSys.NetSys.Models.Objects.User_Model;
 import com.SocialNetSys.NetSys.Models.Responses.FollowerResponse;
 import com.SocialNetSys.NetSys.Services.User.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,20 +13,68 @@ public class FollowService implements  IFollowService {
     @Autowired
     private IUserService _userService;
 
-    public FollowerResponse followUser(HttpServletRequest servletRequest, UUID userFollowedId) {
+    public FollowerResponse followUser(HttpServletRequest servletRequest, UUID userFollowedId) throws Exception {
 
-        var userIdFromRequest = (String) servletRequest.getAttribute("user_id"); // Meu ID
+        try{
+            var userIdFromRequest = (String) servletRequest.getAttribute("user_id"); // Meu ID
 
-        var myId = UUID.fromString(userIdFromRequest);
+            var myId = UUID.fromString(userIdFromRequest);
 
-       return _userService.followManager(myId, userFollowedId);
+            var myUserEntity = _userService.getUserByID(myId); // Minha entidadede usuário
+            var followedUserEntity = _userService.getUserByID(userFollowedId); // A entidade do usuário a ser seguido
+
+            if(followedUserEntity == null) {
+                throw new RuntimeException("Usuário a ser seguido não encontrado");
+            }
+
+            var verifyIfImFollowing = myUserEntity.isFollowing(userFollowedId);
+
+            if (verifyIfImFollowing) {
+                throw new RuntimeException("Usuário já está sendo seguido, o client lhe redirecionará pro serviço de unfollow");
+            }
+
+            var myUser = new User_Model(myUserEntity.getName(), myUserEntity.getId(), myUserEntity.getUsername()); // Objeto que será armazenado na Array de seguidores
+            var followedUser = new User_Model(followedUserEntity.getName(), followedUserEntity.getId(), followedUserEntity.getUsername());
+
+            myUserEntity.startFollow(followedUser); // Salvando o usuário que estou seguindo na  Array de quem estou seguindo
+            followedUserEntity.receiveFollow(myUser);
+
+            _userService.updateUserInDB(myUserEntity);
+            _userService.updateUserInDB(followedUserEntity);
+
+            return new FollowerResponse(myUser.getName(), followedUser.getName());
+
+        } catch(Exception e) {
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public FollowerResponse unfollowUser(HttpServletRequest servletRequest, UUID userFollowedId) {
-        var myIdFromRequest = (String) servletRequest.getAttribute("user_id");
+    public FollowerResponse unfollowUser(HttpServletRequest servletRequest, UUID userFollowedId) throws Exception {
 
-        var myId = UUID.fromString(myIdFromRequest);
+        try{
+            var myIdFromRequest = (String) servletRequest.getAttribute("user_id");
 
-        return _userService.unfollowManager(myId, userFollowedId);
+            var myId = UUID.fromString(myIdFromRequest);
+
+            var myUserEntity = _userService.getUserByID(myId);
+            var followedUserEntity = _userService.getUserByID(userFollowedId);
+
+            var verifyIfImFollowing =  myUserEntity.isFollowing(userFollowedId);
+
+            if(!verifyIfImFollowing) {
+                throw new RuntimeException("Você não está seguindo esse usuário, o client lhe encaminhará pro serviço de Follow");
+            }
+
+            myUserEntity.stopFollow(userFollowedId);
+            followedUserEntity.lostFollow(myId);
+
+            _userService.updateUserInDB(myUserEntity);
+            _userService.updateUserInDB(followedUserEntity);
+
+            return new FollowerResponse(myUserEntity.getName(), followedUserEntity.getName());
+
+        } catch (Exception e) {
+            throw  new Exception(e.getMessage());
+        }
     }
 }

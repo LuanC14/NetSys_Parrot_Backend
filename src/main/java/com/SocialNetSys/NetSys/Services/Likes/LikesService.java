@@ -23,7 +23,7 @@ public class LikesService implements ILikesService {
         var userId = UUID.fromString(userIdFromRequest);
 
         if(_publicationService.verifyIfUserAlreadyLiked(userId, postId)) {
-            throw new IllegalArgumentException("Você já curtiu essa publicação, utilize o serviço de unlike");
+            throw new RuntimeException("Você já curtiu essa publicação, utilize o serviço de unlike");
         }
 
         var userLiked = _userService.getUserByID(userId).getName();
@@ -38,7 +38,7 @@ public class LikesService implements ILikesService {
         var userId = UUID.fromString(userIdFromRequest);
 
         if(!_publicationService.verifyIfUserAlreadyLiked(userId, postId)) {
-            throw new IllegalArgumentException("Você não curtiu essa publicação, utilize o serviço de like");
+            throw new RuntimeException("Você não curtiu essa publicação, utilize o serviço de like");
         }
         _publicationService.saveWithoutRemovedLike(userId, postId);
     }

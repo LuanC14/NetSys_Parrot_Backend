@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface ICommentService {
 
-    public void createComment(CommentRequest request, HttpServletRequest servletRequest, UUID post_id);
+    public void createComment(CommentRequest request, HttpServletRequest servletRequest, UUID post_id) throws Exception;
 
-    public Publication removeComment(UUID postId, HttpServletRequest servletRequest , UUID commentId);
+    public Publication removeComment(UUID postId, HttpServletRequest servletRequest , UUID commentId) throws Exception;
 }

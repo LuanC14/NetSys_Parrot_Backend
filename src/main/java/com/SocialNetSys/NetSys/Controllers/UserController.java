@@ -43,9 +43,9 @@ public class UserController {
         return ResponseEntity.ok().body("Senha alterada com sucesso");
     };
 
-    @PatchMapping("/rename")
-    public ResponseEntity<String> changeName(@RequestBody ChangeNameRequest request, HttpServletRequest servletRequest ) {
-        _userService.changeName(request, servletRequest);
+    @PutMapping("/rename")
+    public ResponseEntity<String> changeNames(@RequestBody ChangeNameRequest request, HttpServletRequest servletRequest ) {
+        _userService.nameAndUsernameModifier(request, servletRequest);
 
         return ResponseEntity.ok().body("Nome alterado com suceso!");
     };
