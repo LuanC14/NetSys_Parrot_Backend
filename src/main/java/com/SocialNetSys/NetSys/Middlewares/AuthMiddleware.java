@@ -34,7 +34,7 @@ public class AuthMiddleware implements HandlerInterceptor {
 
         if(request.getRequestURI().equals("/api/v1/user/username") || request.getRequestURI().equals("/api/v1/user/email") ) { return  true; }
 
-        if (request.getRequestURI().contains("/swagger-ui.html") || request.getRequestURI().equals("/v2/api-docs")) {
+        if (request.getRequestURI().equals("/v3/api-docs") || request.getRequestURI().contains("swagger")) {
             return true;
         }
 
