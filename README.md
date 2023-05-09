@@ -4,7 +4,7 @@
 ---
 ##### Pontos iniciais
 
-- Essa API possui uma interface gráfica gerada pelo Swagger, para auxiliar na realização das requisições está acessível na URI: */swagger-ui/index.html#/*.
+- Essa API possui uma interface gráfica gerada pelo Swagger, para auxiliar na realização das requisições, porém será necessário utilizar um serviço como Postman, foi grande partes das requisições necessitam do token de autenticação gerado pelo Middleware. está acessível na URI: */swagger-ui/index.html#/*.
 -  O ambiente de desenvolvimento está na porta 8082.
 - O projeto em Docker-Compose será disponibilizado em breve.
 
