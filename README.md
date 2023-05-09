@@ -4,7 +4,7 @@
 ---
 ##### Pontos iniciais
 
-- Essa API possui uma interface gráfica gerada pelo Swagger, está acessível na URI: */swagger-ui/index.html#/*.
+- Essa API possui uma interface gráfica gerada pelo Swagger, para auxiliar na realização das requisições está acessível na URI: */swagger-ui/index.html#/*.
 -  O ambiente de desenvolvimento está na porta 8082.
 - O projeto em Docker-Compose será disponibilizado em breve.
 
