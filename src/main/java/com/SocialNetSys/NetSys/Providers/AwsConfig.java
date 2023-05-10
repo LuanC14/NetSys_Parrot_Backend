@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AwsConfig {
-    @Value("${aws.acess.key}")
-    protected String ACESS_KEY;
-    @Value("${aws.secret.key}")
-    protected String SECRET_KEY;
+//    @Value("${aws.acess.key}")
+    protected String ACESS_KEY = "AKIA33ZUHOYIVYNWGE7F";
+//    @Value("${aws.secret.key}")
+    protected String SECRET_KEY = "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";
     protected  String ENDPOINT_NAME = "s3.us-east-2.amazonaws.com";
     protected  String REGION = "us-east-2";
 

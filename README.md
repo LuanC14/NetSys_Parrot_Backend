@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Backend da rede social Parrot, por Luan Chrystian Pimentel.
+=======
+# Backend da rede social NetSys (Parrot).
+>>>>>>> e534433d9b7bb0381fc460dd62cc3bd9cb14a327
 ---
 ###### Aplicação apelidada como NetSys. Criada com a versão 20 do Java, Springboot na versão 3.1.0 Snapshot. 
 ---
@@ -6,12 +10,42 @@
 
 - Essa API possui uma interface gráfica gerada pelo Swagger para auxiliar na compreensão das requisições, porém será necessário utilizar um serviço como Postman, pois grande partes das requisições necessitam do token de autenticação ou de alguma implementação feita pelo Middleware. está acessível na URI: */swagger-ui/index.html#/*.
 -  O ambiente de desenvolvimento está na porta 8082.
+<<<<<<< HEAD
 - Ausência da aplicação em Docker: Estou com o seguinte erro "Caused by: java.lang.NoClassDefFoundError: com/amazonaws/auth/AWSCredentials" ao tentar utilizar a aplicação via contêiner no Docker, não consegui resolver a tempo.
 
+=======
+- Contêiner Docker da aplicação ainda não está disponível.
+>>>>>>> e534433d9b7bb0381fc460dd62cc3bd9cb14a327
 # Banco de dados e upload de arquivos.
 
 ###### O banco de dados utilizado na aplicação é o MongoDB, manipulado pelo framework Spring Data MongoDB. Para upload de arquivos, é utilizado o AWS-S3, sistema de Buckets da Amazon, conectado através da sua API gratuita.
 ---
+<<<<<<< HEAD
+=======
+## Arquitetura do projeto: Estrutura de pastas
+O projeto utiliza como base o MVC e possui os seguintes pacotes:
+
+##### Pacote Controllers:
+Possui todos os controllers da aplicação.
+
+##### Pacote Midlewares: 
+Possui o AuthMiddleware, responsável por validar o middleware de autenticação e inserir o userId nas requisições. Dentro desse pacote também tem uma pasta chamada Configuration, aonde possui as configurações do middleware.
+
+##### Pacote Models: 
+Dentro dele existe 4 pastas. A primeira é a Entities, que possui as entidades de User e Publication, utilizadas pro banco de dados. A segunda pasta é a Objects, que possui classes utilizadas de modelos para objetos como Biography_Model e Comment_Model. A Terceira e a quarta pasta são Request e Response, com classes utilizadas para modelar as requisições e as respostas. 
+
+##### Pacote Providers: 
+Dentro desse pacote, encontra-se duas classes, uma a da configuração do AWS, e outra a FilenameCreator, classe que possuí um método estático utilizado para gerar os nomes dos arquivos upados. Basicamente essa pasta armazena configurações e funções utilitárias, ela será melhor exploarada nas próximas versões do projeto.
+
+##### Pacote Repositories: 
+Possui os dois repositórios do banco de dados, um para a entidade de Usuário e outra para de publicação.
+
+##### Pacote Services: 
+Possui todos os serviços da aplicação, contendo as principais regras de negócio utilizadas pro funcionamento do projeto.
+
+---
+
+>>>>>>> e534433d9b7bb0381fc460dd62cc3bd9cb14a327
 # Serviço Autenticação
 A autenticação é realizada através do endpoint '/api/v1/auth', aonde realiza o verbo POST, obtendo o email e a senha, retornando os dados do usuários, além  de gerar um token de autenticação.
 
@@ -111,6 +145,7 @@ Também é uma Array *LinkedList*, do tipo *Like_Model*, aonde possui 3 atributo
 Endereço dos arquivos:
 - Controller: Controllers/LikesController
 - Serviço: Services/LikesService)
+<<<<<<< HEAD
 
 ---
 ### Arquitetura do projeto: Estrutura de pastas
@@ -134,3 +169,5 @@ Possui os dois repositórios do banco de dados, um para a entidade de Usuário e
 ##### Pacote Services: 
 Possui todos os serviços da aplicação, contendo as principais regras de negócio utilizadas pro funcionamento do projeto.
 
+=======
+>>>>>>> e534433d9b7bb0381fc460dd62cc3bd9cb14a327

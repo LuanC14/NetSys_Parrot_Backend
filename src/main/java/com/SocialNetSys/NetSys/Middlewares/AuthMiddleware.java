@@ -18,8 +18,8 @@ import java.security.Key;
 
 @Component
 public class AuthMiddleware implements HandlerInterceptor {
-    @Value("${jwt.secret}")
-    protected String decryptedKey;
+//    @Value("${jwt.secret}")
+    protected String decryptedKey = "26462948404D635166546A576E5A7234753778214125442A472D4B614E645267";
 
     @Override
     public boolean preHandle(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws Exception {
