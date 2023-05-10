@@ -1,4 +1,4 @@
-# Backend da rede social Parrot, por Luan Chrystian Pimentel.
+# Backend da rede social NetSys (Parrot).
 ---
 ###### Aplicação apelidada como NetSys. Criada com a versão 20 do Java, Springboot na versão 3.1.0 Snapshot. 
 ---
