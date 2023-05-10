@@ -6,7 +6,7 @@
 
 - Essa API possui uma interface gráfica gerada pelo Swagger para auxiliar na compreensão das requisições, porém será necessário utilizar um serviço como Postman, pois grande partes das requisições necessitam do token de autenticação ou de alguma implementação feita pelo Middleware. está acessível na URI: */swagger-ui/index.html#/*.
 -  O ambiente de desenvolvimento está na porta 8082.
-- O projeto em Docker-Compose será disponibilizado em breve.
+- Ausência da aplicação em Docker: Estou com o seguinte erro "Caused by: java.lang.NoClassDefFoundError: com/amazonaws/auth/AWSCredentials" ao tentar utilizar a aplicação via contêiner no Docker, não consegui resolver a tempo.
 
 # Banco de dados e upload de arquivos.
 
