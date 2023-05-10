@@ -11,7 +11,7 @@
 
 ###### O banco de dados utilizado na aplicação é o MongoDB, manipulado pelo framework Spring Data MongoDB. Para upload de arquivos, é utilizado o AWS-S3, sistema de Buckets da Amazon, conectado através da sua API gratuita.
 ---
-### Arquitetura do projeto: Estrutura de pastas
+## Arquitetura do projeto: Estrutura de pastas
 O projeto utiliza como base o MVC e possui os seguintes pacotes:
 
 ##### Pacote Controllers:
