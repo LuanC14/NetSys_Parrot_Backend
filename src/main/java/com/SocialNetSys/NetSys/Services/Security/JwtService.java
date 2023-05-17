@@ -11,8 +11,8 @@ import java.util.Date;
 import java.util.UUID;
 @Service
 public class JwtService implements IJwtService {
-//    @Value("${jwt.secret}")
-    protected String decryptedKey = "26462948404D635166546A576E5A7234753778214125442A472D4B614E645267";
+    @Value("${jwt.secret}")
+    private String decryptedKey;
 
     public String generateToken(UUID userID) {
 

@@ -75,12 +75,6 @@
 	</dependency>
 
 		<dependency>
-			<groupId>com.amazonaws</groupId>
-			<artifactId>aws-java-sdk-core</artifactId>
-			<version>1.12.465</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.1.0</version>
@@ -92,9 +86,7 @@
 			<version>1.7.0</version>
 		</dependency>
 
-
 	</dependencies>
-	<packaging>jar</packaging>
 	<build>
 		<plugins>
 			<plugin>
@@ -110,7 +102,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>sysnet-api</finalName>
 	</build>
 
 	<repositories>

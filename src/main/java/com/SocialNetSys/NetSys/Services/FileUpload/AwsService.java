@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.util.Objects;
 @Service
 public class AwsService {
-    protected String NAME_BUCKET = "netsysbackend";
-    protected  String ENDPOINT_NAME = "s3.us-east-2.amazonaws.com";
+    private String NAME_BUCKET = "demo-bucket";
+    private  String ENDPOINT_NAME = "http://s3.localhost.localstack.cloud:4566";
 
     @Autowired
     private AmazonS3 amazonS3;
