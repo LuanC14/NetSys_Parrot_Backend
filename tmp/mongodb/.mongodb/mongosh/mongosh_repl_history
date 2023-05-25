@@ -1,0 +1,16 @@
+db.user.find()
+db.publication.deleteMany({})
+db.publication.find()
+db.publication.deleteMany({})
+show collections
+db.publication.find()
+db.publication.deleteMany({})
+db.publication.find()
+show collections
+use NetSys-DB
+show dbs
+db.user.find()
+user.find()
+show collections
+use NetSys-DB
+show dbs

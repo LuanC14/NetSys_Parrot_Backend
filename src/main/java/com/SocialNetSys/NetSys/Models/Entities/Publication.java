@@ -17,15 +17,19 @@ public class Publication {
     private UUID id;
     private UUID userId;
     public String nameAuthor;
+    public String username;
+    public String photoProfile;
     public String contentText;
     public String contentImage;
     public LocalDateTime created_at;
     public LinkedList<Comment_Model> comments;
     public LinkedList<Like_Model> likes;
 
-    public Publication(String nameAuthor, String contentText,  UUID userId) {
+    public Publication(String nameAuthor, String username, String contentText,  UUID userId, String photoProfile) {
         setId();
         this.nameAuthor = nameAuthor;
+        this.username = username;
+        this.photoProfile = photoProfile;
         this.contentText = contentText;
         this.created_at = LocalDateTime.now();
         this.userId = userId;

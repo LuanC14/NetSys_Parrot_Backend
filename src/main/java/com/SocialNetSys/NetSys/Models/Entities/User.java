@@ -28,8 +28,9 @@ public class User {
         this.biography = new LinkedList<Biography_Model>();
         };
 
-    public void setBiography(Biography_Model bio) {
+    public void addInfoInBio(Biography_Model bio) {
         this.biography.add(bio);
+        System.out.println(this.biography);
     }
 
     public void replaceBiography(LinkedList<Biography_Model> biography) {

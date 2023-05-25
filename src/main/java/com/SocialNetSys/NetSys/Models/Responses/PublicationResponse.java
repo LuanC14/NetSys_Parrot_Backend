@@ -12,6 +12,8 @@ public class PublicationResponse {
     public UUID postId;
     public UUID authorId;
     public String nameAuthor;
+    public String username;
+    public String photoProfile;
     public String contentText;
     public String contentImage;
     public LocalDateTime createdAt;

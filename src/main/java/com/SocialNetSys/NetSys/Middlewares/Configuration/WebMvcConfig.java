@@ -9,11 +9,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+    private final AuthMiddleware authMiddleware;
+
     @Autowired
-    private AuthMiddleware _authMiddleware;
+    public WebMvcConfig(AuthMiddleware authMiddleware) {
+        this.authMiddleware = authMiddleware;
+    }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(_authMiddleware);
+        registry.addInterceptor(authMiddleware)
+                .addPathPatterns("/**")
+                .excludePathPatterns("/v3/api-docs", "/swagger-ui/**"); // Exclua as rotas do Swagger, se aplicável
     }
 }

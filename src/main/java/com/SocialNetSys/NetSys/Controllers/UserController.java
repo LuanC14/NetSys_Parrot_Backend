@@ -1,5 +1,6 @@
 package com.SocialNetSys.NetSys.Controllers;
 
+import com.SocialNetSys.NetSys.Models.Entities.User;
 import com.SocialNetSys.NetSys.Models.Requests.ChangeNameRequest;
 import com.SocialNetSys.NetSys.Models.Requests.ChangePasswordRequest;
 import com.SocialNetSys.NetSys.Models.Responses.FindUserResponse;
@@ -12,11 +13,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/user")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
     @Autowired
     private IUserService _userService;
+
+
+    @GetMapping(path = "/all/{name}")
+    public ResponseEntity<List<FindUserResponse>> getAllUsers(@PathVariable String name) {
+
+       var response = _userService.getAllUserByNameOrUsername(name);
+
+       return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/username")
     @Operation(description = "Realiza busca dos dados do usuário pelo username (nickname único).")
@@ -24,10 +38,11 @@ public class UserController {
 
         return ResponseEntity.ok().body(_userService.findUserByUsername(username));
     }
-
+    @CrossOrigin(origins = "http://localhost:5173")
     @GetMapping("/email")
-    @Operation(description = "Realiza busca de usuários pelo email")
+    @Operation(description = "Realiza busca de usuário pelo ID")
     public ResponseEntity<FindUserResponse> findUserByEmail(String email) {
+
         return ResponseEntity.ok().body(_userService.findUSerByEmail(email));
     }
 
@@ -40,7 +55,7 @@ public class UserController {
     }
 
     @PatchMapping("/newpassword")
-    @Operation(description = "Redefine a senha do usuário. È necessário Token")
+    @Operation(description = "Redefine a senha do usuário.")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordRequest request) {
 
         _userService.changePassword(request);

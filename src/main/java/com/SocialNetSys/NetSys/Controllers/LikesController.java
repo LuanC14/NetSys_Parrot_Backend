@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/publications/like")
+@RequestMapping("/api/v1/like")
+@CrossOrigin(origins = "http://localhost:5173")
 public class LikesController {
     @Autowired
     ILikesService _likeService;
 
-    @PostMapping(path = "/{post_id}")
-    @Operation(description = "Cria um like na Array de likes da publicação. O Id da publicação vem do Path Params e o do curtidor vem do Token.")
-    ResponseEntity<String> likePublication( HttpServletRequest servletRequest, @PathVariable UUID post_id) {
+    @PostMapping("{userId}/{postId}")
+    ResponseEntity<String> likePublication(@PathVariable("userId") UUID userId, @PathVariable("postId") UUID postId ) {
 
-        _likeService.setLikePublication( servletRequest, post_id);
+        _likeService.setLikePublication(userId, postId );
 
         return ResponseEntity.ok().body("Like Publication");
     }
 
-    @DeleteMapping( path = "/delete/{post_id}")
+    @DeleteMapping("/{userId}/{postId}")
     @Operation(description = "Remove o like dado na publicação. O ID da publicação vem do Path Params e o do curtidor vem do Token")
-    ResponseEntity<String> removeLike(HttpServletRequest servletRequest, @PathVariable UUID post_id ) {
-        _likeService.removeLikePublication(servletRequest, post_id);
+    ResponseEntity<String> removeLike(@PathVariable("userId") UUID userId, @PathVariable("postId") UUID postId ) {
+        _likeService.removeLikePublication(userId, postId);
 
         return ResponseEntity.ok().body("Like removido");
     }

@@ -10,9 +10,9 @@ import java.util.UUID;
 
 public interface IBiographyService {
 
-    public LinkedList<Biography_Model> createBiography(BiographyRequest request, HttpServletRequest servletRequest);
+    public void createBiography(BiographyRequest request, HttpServletRequest servletRequest);
 
-    public LinkedList<Biography_Model>  updateBiography(UUID itemBioId, Biography_Model request, HttpServletRequest servletRequest);
+    public LinkedList<Biography_Model>  updateBiography(UUID itemBioId, BiographyRequest request, HttpServletRequest servletRequest);
 
     public void deleteBiography(UUID itemBioId, HttpServletRequest servletRequest);
 }

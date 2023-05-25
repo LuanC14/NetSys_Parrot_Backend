@@ -16,11 +16,7 @@ public class LikesService implements ILikesService {
     @Autowired
     private IUserService _userService;
 
-    public void setLikePublication(HttpServletRequest servletRequest, UUID postId) {
-
-        var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
-
-        var userId = UUID.fromString(userIdFromRequest);
+    public void setLikePublication(UUID userId, UUID postId ) {
 
         var publication = _publicationService.findPublicationById(postId);
 
@@ -41,9 +37,7 @@ public class LikesService implements ILikesService {
         _publicationService.updatePublicationInDB(publication);
     }
 
-    public void removeLikePublication(HttpServletRequest servletRequest, UUID postId) {
-        var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
-        var userId = UUID.fromString(userIdFromRequest);
+    public void removeLikePublication(UUID userId, UUID postId) {
 
         if(!verifyIfUserAlreadyLikedThePost(userId, postId)) {
             throw new RuntimeException("Você não curtiu essa publicação, utilize o serviço de like");
@@ -61,7 +55,6 @@ public class LikesService implements ILikesService {
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
-
     }
 
     public boolean verifyIfUserAlreadyLikedThePost(UUID userId, UUID postId) {

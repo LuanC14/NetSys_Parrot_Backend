@@ -15,34 +15,23 @@ public class BiographyService implements IBiographyService {
     @Autowired
     private IUserService _userService;
 
-    public LinkedList<Biography_Model> createBiography(BiographyRequest request, HttpServletRequest servletRequest) {
+    public void createBiography(BiographyRequest request, HttpServletRequest servletRequest) {
 
         var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
         UUID userId = UUID.fromString(userIdFromRequest);
-
         var user = _userService.getUserByID(userId);
 
+        var biography = new Biography_Model();
 
-        try{
-            for(Biography_Model b : request.biography) {
-                var bio = new Biography_Model();
+        biography.setType(request.getType());
+        biography.setValue(request.getValue());
+        biography.setUser_id(userId);
 
-                bio.setType(b.getType());
-                bio.setValue(b.getValue());
-                bio.setUser_id(userId);
-
-                user.setBiography(bio);
-
-                _userService.updateUserInDB(user);
-            }
-        } catch(Exception e) {
-            throw new RuntimeException("Failed to save biography for user");
-        }
-
-        return user.getBiography();
+        user.addInfoInBio(biography);
+        _userService.updateUserInDB(user);
     };
 
-    public LinkedList<Biography_Model> updateBiography(UUID itemBioId, Biography_Model request, HttpServletRequest servletRequest) {
+    public LinkedList<Biography_Model> updateBiography(UUID itemBioId, BiographyRequest request, HttpServletRequest servletRequest) {
 
         var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
             UUID userId = UUID.fromString(userIdFromRequest);

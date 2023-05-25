@@ -25,4 +25,6 @@ public interface IPublicationService {
 
     public List<PublicationResponse> findAllPublications(UUID user_id);
 
+    public void updateProfilePhotoInPublications(HttpServletRequest servletRequest);
+
 }

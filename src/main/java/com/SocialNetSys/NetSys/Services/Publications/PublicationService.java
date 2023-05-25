@@ -39,12 +39,15 @@ public class PublicationService implements IPublicationService {
          var userId = UUID.fromString(userIdFromRequest);
 
          var nameAuthor = _userService.getUserByID(userId).getName();
+         var username = _userService.getUserByID(userId).getUsername();
+
+         var photoProfileAuthor = _userService.getUserByID(userId).getAvatar();
 
          if(nameAuthor == null) {
              throw new RuntimeException("Usuário não autenticado");
          }
 
-        var publication = new Publication(nameAuthor, title, userId);
+        var publication = new Publication(nameAuthor, username, title, userId, photoProfileAuthor);
 
         if(photo != null) {
            var photoUri = imageForPublication(photo, publication);
@@ -72,8 +75,11 @@ public class PublicationService implements IPublicationService {
     }
 
     public void deletePublication(UUID postId, HttpServletRequest servletRequest) {
+
         var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
         var userId = UUID.fromString(userIdFromRequest);
+        System.out.println(userId);
+
 
         var optionalPublication = _publicationRepository.findById(postId);
 
@@ -94,8 +100,8 @@ public class PublicationService implements IPublicationService {
     public List<PublicationResponse> findAllPublications(UUID userId) {
 
         var publications = _publicationRepository.findAllByUserId(userId);
+        var user = _userService.getUserByID(userId);
 
-        if(!publications.isEmpty()) {
             List<PublicationResponse> allPublicationsResponse = new ArrayList<>();
 
             for(Publication publication : publications) {
@@ -103,8 +109,10 @@ public class PublicationService implements IPublicationService {
 
                 response.setPostId(publication.getId());
                 response.setAuthorId(publication.getUserId());
-                response.setNameAuthor(publication.getNameAuthor());
+                response.setNameAuthor(user.getName());
+                response.setUsername(user.getUsername());
                 response.setContentText(publication.getContentText());
+                response.setPhotoProfile(publication.getPhotoProfile());
                 response.setContentImage(publication.getContentImage());
                 response.setCreatedAt(publication.getCreated_at());
                 response.setComments(publication.getComments());
@@ -114,12 +122,9 @@ public class PublicationService implements IPublicationService {
             }
 
             return allPublicationsResponse;
-        } else {
-            throw new IllegalArgumentException("Publicações não encontradas");
-        }
     }
 
-    public Publication findPublicationById(UUID postId) {
+    public Publication findPublicationById(UUID postId ) {
 
         var optionalPublication = _publicationRepository.findById(postId);
 
@@ -134,4 +139,18 @@ public class PublicationService implements IPublicationService {
         _publicationRepository.save(publication);
     }
 
+    public void updateProfilePhotoInPublications(HttpServletRequest servletRequest) {
+        var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
+        var userId = UUID.fromString(userIdFromRequest);
+
+        var allPublis =  _publicationRepository.findAllByUserId(userId);
+
+        for(var publi : allPublis) {
+            var userPhotoProfile = _userService.getUserByID(userId).getAvatar();
+            publi.setPhotoProfile(userPhotoProfile);
+            _publicationRepository.save(publi);
+        }
+    }
 }
+
+

@@ -2,10 +2,11 @@ package com.SocialNetSys.NetSys.Models.Responses;
 
 import com.SocialNetSys.NetSys.Models.Objects.Biography_Model;
 import com.SocialNetSys.NetSys.Models.Objects.User_Model;
+import lombok.Data;
 
 import java.util.LinkedList;
 import java.util.UUID;
-
+@Data
 public class FindUserResponse {
     public UUID id;
     public String name;

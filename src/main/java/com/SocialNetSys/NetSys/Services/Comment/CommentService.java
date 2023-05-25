@@ -4,6 +4,7 @@ import com.SocialNetSys.NetSys.Models.Entities.Publication;
 import com.SocialNetSys.NetSys.Models.Requests.CommentRequest;
 import com.SocialNetSys.NetSys.Models.Objects.Comment_Model;
 import com.SocialNetSys.NetSys.Services.Publications.IPublicationService;
+import com.SocialNetSys.NetSys.Services.User.IUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,14 +15,19 @@ public class CommentService implements ICommentService {
     @Autowired
     private IPublicationService _publicationService;
 
+    @Autowired
+    private IUserService _userService;
+
     public void createComment(CommentRequest request, HttpServletRequest servletRequest, UUID postId) throws Exception {
 
         var authorIdFromRequest = (String) servletRequest.getAttribute("user_id");
         var author_id = UUID.fromString(authorIdFromRequest);
         var publication = _publicationService.findPublicationById(postId);
 
+        var author = _userService.getUserByID(author_id);
+
         try {
-            var comment = new Comment_Model(request.content, postId, author_id);
+            var comment = new Comment_Model(request.content, postId, author_id, author.getAvatar(), author.getName(), author.getUsername());
             publication.saveComment(comment);
             _publicationService.updatePublicationInDB(publication);
 

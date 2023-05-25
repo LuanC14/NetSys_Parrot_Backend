@@ -14,10 +14,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/publications")
+@CrossOrigin(origins = "http://localhost:5173")
 public class PublicationController {
     @Autowired
     IPublicationService _publicationService;
-
     @GetMapping(path = "/all/{userId}")
     @Operation(description = "Retorna todas as publicações do usuário pelo ID do usuário")
     ResponseEntity<List<PublicationResponse>> findAllPublication(@PathVariable UUID userId) {
@@ -52,5 +52,13 @@ public class PublicationController {
     ResponseEntity<String> deletePublication(@PathVariable UUID postId, HttpServletRequest servletRequest) {
         _publicationService.deletePublication(postId, servletRequest);
         return ResponseEntity.ok().body("Post deletado");
+    }
+
+    @PatchMapping("/profile")
+    ResponseEntity<String> updatePhotoProfileInPublications(HttpServletRequest servletRequest) {
+
+        _publicationService.updateProfilePhotoInPublications(servletRequest);
+
+        return ResponseEntity.ok("");
     }
 }

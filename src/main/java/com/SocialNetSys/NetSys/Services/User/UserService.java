@@ -5,16 +5,23 @@ import com.SocialNetSys.NetSys.Models.Objects.Biography_Model;
 import com.SocialNetSys.NetSys.Models.Objects.User_Model;
 import com.SocialNetSys.NetSys.Models.Requests.ChangeNameRequest;
 import com.SocialNetSys.NetSys.Models.Requests.ChangePasswordRequest;
+import com.SocialNetSys.NetSys.Models.Requests.UserNameRequest;
 import com.SocialNetSys.NetSys.Models.Responses.FindUserResponse;
 import com.SocialNetSys.NetSys.Models.Requests.UserRequest;
 import com.SocialNetSys.NetSys.Models.Responses.FollowerResponse;
+import com.SocialNetSys.NetSys.Providers.FilenameCreator;
 import com.SocialNetSys.NetSys.Repositories.UserRepository;
 import com.SocialNetSys.NetSys.Services.FileUpload.IFileUploadService;
+import com.SocialNetSys.NetSys.Services.Publications.IPublicationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -31,12 +38,13 @@ public class UserService implements IUserService {
             var checkEmailInUse = _userRepository.findUserByEmail(request.email).isPresent();
             var checkUsernameAlreadyInUse = _userRepository.findUserByUsername(request.username).isPresent();
 
-            if(checkEmailInUse) {
+            if (checkEmailInUse) {
                 throw new RuntimeException("O email já está em uso");
-            };
+            }
+            ;
 
-            if(checkUsernameAlreadyInUse) {
-                throw  new RuntimeException("O @username já está em uso");
+            if (checkUsernameAlreadyInUse) {
+                throw new RuntimeException("O @username já está em uso");
             }
 
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -50,20 +58,20 @@ public class UserService implements IUserService {
             return response.getId().toString();
 
         } catch (Exception e) {
-           throw  new RuntimeException("Não foi possível realizar o cadastro.");
+            throw new RuntimeException("Não foi possível realizar o cadastro.");
         }
     }
 
     public FindUserResponse findUSerByEmail(String email) {
         var optionalUser = _userRepository.findUserByEmail(email);
 
-        if(optionalUser.isPresent()) {
+        if (optionalUser.isPresent()) {
             var user = optionalUser.get();
 
             return new FindUserResponse(
                     user.getId(), user.getName(), user.getEmail(),
                     user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
-        } else  {
+        } else {
             throw new RuntimeException("Usuáario não encontrado");
         }
     }
@@ -71,20 +79,29 @@ public class UserService implements IUserService {
     public FindUserResponse findUserByUsername(String username) {
         var optionalUser = _userRepository.findUserByUsername(username);
 
-        if(optionalUser.isPresent()) {
+        if (optionalUser.isPresent()) {
             var user = optionalUser.get();
 
             return new FindUserResponse(
                     user.getId(), user.getName(), user.getEmail(),
                     user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
-        } else  {
+        } else {
             throw new RuntimeException("Usuáario não encontrado");
         }
     }
+
+    public FindUserResponse findUserById(UUID id) {
+        var user = _userRepository.findById(id).get();
+
+        return new FindUserResponse(
+                user.getId(), user.getName(), user.getEmail(),
+                user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
+    }
+
     public User getUserByEmail(String email) {
         var optionalUser = _userRepository.findUserByEmail(email);
 
-        if(optionalUser.isPresent()) {
+        if (optionalUser.isPresent()) {
             return optionalUser.get();
         } else {
             throw new Error("Usuário não encontrado");
@@ -104,76 +121,99 @@ public class UserService implements IUserService {
 
         var user = getUserByEmail(request.email);
 
-        if(user == null) {
-            throw new RuntimeException ("Email ou senha inválido");
+        if (user == null) {
+            throw new RuntimeException("Email ou senha inválido");
         }
 
         var encoder = new BCryptPasswordEncoder();
 
         var checkPasswordMatch = encoder.matches(request.oldPassword, user.getPassword());
 
-        if(checkPasswordMatch) {
+        if (checkPasswordMatch) {
             var newHashedPassword = encoder.encode(request.newPassword);
 
             user.setPassword(newHashedPassword);
             _userRepository.save(user);
 
         } else {
-            throw  new RuntimeException("Email ou senha inválido");
+            throw new RuntimeException("Email ou senha inválido");
         }
 
     }
 
     public void nameAndUsernameModifier(ChangeNameRequest request, HttpServletRequest servletRequest) {
         var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
-        var user_id  = UUID.fromString(userIdFromRequest);
+        var user_id = UUID.fromString(userIdFromRequest);
 
         var user = getUserByID(user_id);
         var checkUsernameAlreadyInUse = _userRepository.findUserByUsername(request.username).isPresent();
 
-        if(checkUsernameAlreadyInUse) {
+        if (checkUsernameAlreadyInUse) {
             throw new RuntimeException("O username já está em uso");
         }
 
-        if(request.getName() != null && request.getUsername() != null) {
+        if (request.getName() != null && request.getUsername() != null) {
             user.setName(request.getName());
             user.setUsername(request.getUsername());
         }
 
-        if(request.getName() == null && request.getUsername() != null) {
+        if (request.getName() == null && request.getUsername() != null) {
             user.setUsername(request.getUsername());
         }
 
-        if(request.getName() != null && request.getUsername() == null) {
+        if (request.getName() != null && request.getUsername() == null) {
             user.setName(request.getName());
         }
 
-        if(request.getName() == null && request.getUsername() == null) {
-            throw  new RuntimeException("Operação inválida");
+        if (request.getName() == null && request.getUsername() == null) {
+            throw new RuntimeException("Operação inválida");
         }
 
         _userRepository.save(user);
     }
 
-    public void uploadPhotoProfile(MultipartFile photo, HttpServletRequest servletRequest)  {
-    var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
-    var userId = UUID.fromString(userIdFromRequest);
+    public void uploadPhotoProfile(MultipartFile photo, HttpServletRequest servletRequest) throws Exception {
+        var userIdFromRequest = (String) servletRequest.getAttribute("user_id");
+        var userId = UUID.fromString(userIdFromRequest);
 
-    var user = _userRepository.findById(userId).get();
+        var user = _userRepository.findById(userId).get();
 
-    var photoUri = "";
+        var photoUri = "";
 
-    try {
+        var filename = FilenameCreator.nameGenerator(user.getId(), Objects.requireNonNull(photo.getOriginalFilename()));
 
-    var filename = user.getId() + "." + photo.getOriginalFilename().substring(photo.getOriginalFilename().lastIndexOf(".") + 1);
-
-    photoUri = _fileUploadService.upload(photo, filename);
-
-    } catch (Exception e) {
-        throw new RuntimeException(e.getMessage());
-    }
+        photoUri = _fileUploadService.upload(photo, filename);
 
         user.setAvatar(photoUri);
         _userRepository.save(user);
+    }
+
+    public List<FindUserResponse> getAllUserByNameOrUsername(String name) {
+        if(name.equals("*")) {
+            var users = _userRepository.findAll();
+            var userResponse = new LinkedList<FindUserResponse>();
+
+            for(var user : users) {
+                var userModel = new FindUserResponse(user.getId(), user.getName(), user.getEmail(),
+                        user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
+
+                userResponse.add(userModel);
+            }
+
+            return userResponse;
+
+        } else {
+                var users = _userRepository.findByNameIgnoreCaseContainingOrUsernameIgnoreCaseContaining(name, name);
+                var userResponse = new LinkedList<FindUserResponse>();
+
+                for(var user: users) {
+                            var userModel = new FindUserResponse(user.getId(), user.getName(), user.getEmail(),
+                                    user.getUsername(), user.getFollowers(), user.getFollowing(), user.getBiography(), user.getAvatar());
+
+                            userResponse.add(userModel);
+                        }
+
+            return userResponse;
+        }
     }
 }

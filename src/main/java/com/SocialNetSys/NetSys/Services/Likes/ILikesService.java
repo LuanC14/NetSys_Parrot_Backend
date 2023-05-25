@@ -7,9 +7,9 @@ import java.util.UUID;
 
 public interface ILikesService {
 
-    public void setLikePublication(HttpServletRequest servletRequest, UUID post_id);
+    public void setLikePublication( UUID userId, UUID postId);
 
-    public void removeLikePublication(HttpServletRequest servletRequest, UUID post_id);
+    public void removeLikePublication(UUID userId, UUID postId);
 
     public boolean verifyIfUserAlreadyLikedThePost(UUID userId, UUID postId);
 }
